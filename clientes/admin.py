@@ -13,7 +13,7 @@ class ClienteAdmin(admin.ModelAdmin):
 admin.site.register(Cliente, ClienteAdmin) # Registra o modelo Cliente no admin do Django da Classe Cliente e da configuração ClienteAdmin
 
 class RequerimentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'requerente_titular', 'instituidor', 'data', 'observacao')
+    list_display = ('id', 'requerente_titular','NB','servico',  'requerente_dependentes', 'tutor_curador', 'instituidor', 'data', 'estado',  'observacao')
     search_fields = ('id', 'NB', 'requerente_titular__nome', 'requererente_titular__cpf')
 
 admin.site.register(Requerimento, RequerimentoAdmin) # Registra o modelo Requerimento no admin do Django da Classe Requerimento e da configuração RequerimentoAdmin
