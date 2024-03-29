@@ -6,3 +6,6 @@ class Cliente(models.Model):
     data_nascimento = models.DateField() # Data de nascimento do cliente Ex: 21-01-1990
     telefone_whatsapp = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
     telefone = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
+
+    def __str__(self) -> str:
+        return f'{self.cpf}: {self.nome}'  # Retorna o nome do cliente e o CPF do cliente
