@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+        
+{% block content %}
+    
+<main class="content" >
+    <div class="container-fluid ">
+        <div class="p-1 mt-3">
+            <div class='display-5'>Novo Requerimento</div>
+            <hr />
+        </div>
+        <div class="p-1">
+            <form method="post" enctype='multipart/form-data'>
+                {%  csrf_token %}
+                {{ novo_requerimento_form }}
+                
+
+            
+            </form>  
+        </div>
+    </div>
+</main>
+{% endblock content %}

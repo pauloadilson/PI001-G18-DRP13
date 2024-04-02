@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from clientes.models import Cliente
+from clientes.form import ClienteForm, RequerimentoForm
 # Create your views here.
 
 def clientes_view(request):
@@ -23,5 +24,27 @@ def index(request):
         'index.html', 
         {
             'title': 'Home',
+        }
+    )
+
+def novo_cliente_view(request):
+    novo_cliente = ClienteForm(request.POST or None)
+    return render(
+        request, 
+        'novo_cliente.html', 
+        {
+            'title': 'Novo Cliente',
+            'novo_cliente_form': ClienteForm()
+        }
+    )
+
+def novo_requerimento_view(request):
+    novo_requerimento = RequerimentoForm(request.POST or None)
+    return render(
+        request, 
+        'novo_requerimento.html', 
+        {
+            'title': 'Novo Requerimento',
+            'novo_requerimento_form': RequerimentoForm()
         }
     )
