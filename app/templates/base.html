@@ -51,7 +51,7 @@
               </li>
             </ul>
             <form  class="d-flex" role="search" method="GET" action="{% url 'clientes' %}">
-                <input class="form-control mr-sm-2" type="search" placeholder="CPF ou nome" name="busca" aria-label="busca">
+                <input class="form-control mr-sm-2" type="search" placeholder="CPF ou parte sem pontuação" name="busca" aria-label="busca">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Busca</button>
             </form>
         </div>
@@ -64,6 +64,11 @@
 
         {% endblock content %}
     </div>
+    <footer class="bg-body-tertiary text-center">
+      <span class="text-center p-3">
+          Desenvolvido para a disciplina Projeto Integrador 001 - 1º Semestre de 2024.
+      </span>
+  </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
