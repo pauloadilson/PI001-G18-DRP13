@@ -11,9 +11,8 @@
         <div class="p-1">
             <form method="post" enctype='multipart/form-data'>
                 {%  csrf_token %}
-                {{ novo_requerimento_form }}
-                
-
+                {% load crispy_forms_tags %}
+                {% crispy novo_requerimento_form %}
             
             </form>  
         </div>
