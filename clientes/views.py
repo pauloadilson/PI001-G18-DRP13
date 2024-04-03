@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from clientes.models import Cliente
 from clientes.form import ClienteForm, RequerimentoForm
 # Create your views here.
@@ -6,9 +6,17 @@ from clientes.form import ClienteForm, RequerimentoForm
 def clientes_view(request):
     clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
     busca = request.GET.get('busca') # busca é o nome da chave de busca
-    novo_cliente = ClienteForm(request.POST or None)
-    if busca:
-        clientes = clientes.filter(cpf__icontains=busca).order_by('nome')
+    if request.method == 'POST':
+        novo_cliente = ClienteForm(request.POST)
+        if novo_cliente.is_valid():
+            novo_cliente.save()
+            return redirect('clientes')
+        print(novo_cliente.data)
+    elif busca:
+        clientes = clientes.filter(cpf__icontains=busca)
+        novo_cliente = ClienteForm()
+    else:
+        novo_cliente = ClienteForm()
 
     return render(
         request, 
