@@ -1,13 +1,30 @@
 {% extends 'base.html' %}
         
 {% block content %}
+{% load bootstrap5 %}
     
 <main class="content" >
     <div class="container-fluid ">
         <div class="p-1 mt-3">
+            
             <div class='display-5'>Clientes</div>
             <hr />
+            <p class="d-inline-flex gap-1">
+            <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirCliente" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Novo Cliente
+            </a>
+                <div class="collapse mt-2" id="inserirCliente">
+                    <form method="post" enctype='multipart/form-data'>
+                        {%  csrf_token %}
+                        {% load crispy_forms_tags %}
+                        {% crispy novo_cliente_form %}
+                       
+                    </form>  
+                </div>
+            </div>
         </div>
+        <hr />
+
         <div class="p-1">
         <table class="table">
             <thead>
