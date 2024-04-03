@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'clientes',
+    'bootstrap5',
+    'crispy_forms',
+    'crispy_bootstrap5', 
 ]
 
 MIDDLEWARE = [
@@ -131,3 +134,7 @@ DATE_INPUT_FORMATS = ["%d/%m/%Y"]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
