@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from clientes.models import Cliente
+from clientes.models import Cliente, Requerimento
 from clientes.form import ClienteModelForm, RequerimentoModelForm
 # Create your views here.
 
@@ -27,6 +27,24 @@ def clientes_view(request):
             'clientes':clientes
         }
     )
+def cliente_view(request):
+    clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
+    cliente_id = request.GET.get('cpf') # busca é o nome da chave de busca
+#    cliente_id = '35307319860' # busca é o nome da chave de busca
+    requerimentos = Requerimento.objects.all()
+    cliente = clientes.filter(cpf__icontains=cliente_id)[0]
+    requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
+
+    return render(
+        request, 
+        'cliente.html', 
+        {
+            'title': f'Cliente {cliente_id}',
+            'cliente':cliente,
+            'requerimentos_cliente':requerimentos_cliente
+        }
+    )
+
 
 def index(request):
     return render(

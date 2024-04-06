@@ -39,7 +39,7 @@
             <tbody>
                 {% for cliente in clientes %}
                 <tr>
-                    <td>{{ cliente.cpf }}</td>
+                    <td><a href='../cliente/?cpf={{ cliente.cpf }}'> {{ cliente.cpf }}</td>
                     <td>{{ cliente.nome }}</td>
                     <td>{{ cliente.data_nascimento }}</td>
                     <td>{{ cliente.telefone_whatsapp }}</td>
