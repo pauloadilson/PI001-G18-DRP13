@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load bootstrap_icons %}
+
+{% block content %}
+    
+<main class="content" >
+    <div class="container-fluid ">
+        <div class="p-1 mt-3">
+            <div class='display-5'>Cliente</div>
+            <hr />
+                <dl class="row">
+                    <dt class="col-sm-3">CPF</dt>
+                    <dd class="col-sm-9">{{ cliente.cpf }}</dd>
+                
+                    <dt class="col-sm-3">Nome</dt>
+                    <dd class="col-sm-9">{{ cliente.nome }}</dd>
+                
+                    <dt class="col-sm-3 text-truncate">Data de Nascimento</dt>
+                    <dd class="col-sm-9">{{ cliente.data_nascimento }}</dd>
+                
+                    <dt class="col-sm-3">WhatsApp</dt>
+                    <dd class="col-sm-9">{{ cliente.telefone_whatsapp }}</dd>
+                
+                    <dt class="col-sm-3">Telefone</dt>
+                    <dd class="col-sm-9">{{ cliente.telefone }}</dd>
+                </dl>  
+        </div>
+        
+        <hr />
+        <div class="p-1 mt-3">
+            <div class='display-5'>Requerimento</div>
+            <hr />
+                <dl class="row">
+                    <dt class="col-sm-3">NB</dt>
+                    <dd class="col-sm-9">{{ requerimento.NB }}</dd>
+                
+                    <dt class="col-sm-3">Serviço</dt>
+                    <dd class="col-sm-9">{{ requerimento.servico }}</dd>
+                
+                    <dt class="col-sm-3">Dependentes</dt>
+                    <dd class="col-sm-9">{{ requerimento.requerente_dependentes }}</dd>
+                
+                    <dt class="col-sm-3">Tutor/Curador</dt>
+                    <dd class="col-sm-9">{{ requerimento.tutor_curador }}</dd>
+                
+                    <dt class="col-sm-3">Instituidor</dt>
+                    <dd class="col-sm-9">{{ requerimento.instituidor }}</dd>
+                
+                    <dt class="col-sm-3">Data</dt>
+                    <dd class="col-sm-9">{{ requerimento.data }}</dd>
+                
+                    <dt class="col-sm-3">Estado</dt>
+                    <dd class="col-sm-9">{{ requerimento.estado }}</dd>
+                
+                    <dt class="col-sm-3">Observação</dt>
+                    <dd class="col-sm-9">{{ requerimento.observacao }}</dd>
+                </dl>  
+        </div>
+        <hr />
+        <div class="p-1 mt-3">
+            <div class='display-6'>Exigências</div>
+            <hr />
+
+            <p class="d-inline gap-1">
+                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirExigencia" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Nova Exigência
+                </a>
+                    <div class="collapse mt-2" id="inserirExigencia">
+                        <form method="post" enctype='multipart/form-data'>
+                            {%  csrf_token %}
+                            {% load crispy_forms_tags %}
+                            {% crispy nova_exigencia_form %}
+
+                            
+                        </form>  
+                    </div>
+            </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Data</th>
+                            <th>Natureza</th>
+                            <th class='col-sm-2'>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exigencia in exigencias %}
+                        <tr>
+                            <td>{{ exigencia.protocolo }}</td>
+                            <td>{{ exigencia.data }}</td>
+                            <td>{{ exigencia.natureza }}</td>
+                            <td >
+                                <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                                <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                                <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        
+        <hr />
+        <div class="p-1 mt-3">
+            <div class='display-6'>Recursos</div>
+            <hr />
+
+
+            <p class="d-inline gap-1">
+                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirRecurso" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Recurso
+                </a>
+                    <div class="collapse mt-2" id="inserirRecurso">
+                        <form method="post" enctype='multipart/form-data'>
+                            {%  csrf_token %}
+                            {% load crispy_forms_tags %}
+                            {% crispy novo_recurso_form %}
+
+                            
+                        </form>  
+                    </div>
+            </div>
+                <table class="table" id='recursos'>
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Data</th>
+                            <th>Estado</th>
+                            <th>Observação</th>
+                            <th class='col-sm-2'>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for recurso in recursos %}
+                        <tr>
+                            <td>{{ recurso.protocolo }}</td>
+                            <td>{{ recurso.data }}</td>
+                            <td>{{ recurso.estado }}</td>
+                            <td>{{ recurso.observacao }}</td>
+                            <td >
+                                <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                                <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                                <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+    </div>
+</div>
+</main>
+{% endblock content %}

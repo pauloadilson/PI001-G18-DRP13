@@ -24,21 +24,23 @@
                 <dt class="col-sm-3">Telefone</dt>
                 <dd class="col-sm-9">{{ cliente.telefone }}</dd>
               </dl>
+              <hr />
+              <p class="d-inline gap-1">
+                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirCliente" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Novo Requerimento
+                </a>
+                    <div class="collapse mt-2" id="inserirCliente">
+                        <form method="post" enctype='multipart/form-data'>
+                            {%  csrf_token %}
+                            {% load crispy_forms_tags %}
+                            {% crispy novo_requerimento_form %}
+                            
+                        </form>  
+                    </div>
+                </div>
         </div>
-        <hr />
-<! -- 
-class Requerimento(models.Model):
-    id = models.AutoField(primary_key=True) # ID do requerimento
-    requerente_titular = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_titular_requerimento') # Relacionamento com o modelo Cliente
-    servico = models.ForeignKey(Servico, on_delete=models.PROTECT, related_name='servico_requerimento') # Serviço solicitado Ex: Aposentadoria por idade
-    NB = models.CharField(max_length=20, blank=True, null=True) # Número do benefício do cliente
-    requerente_dependentes = models.TextField(blank=True, null=True) #.ManyToManyField(Cliente, related_name='cliente_dependente_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
-    tutor_curador = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_tutor_curador_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
-    instituidor = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_instituidor_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
-    data = models.DateField() # Data do requerimento
-    estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_requerimento') # Estado do requerimento Ex: Pendente, Concluído
-    observacao = models.TextField() # Observações do requerimento 
--->
+        
+
         <div class="p-1">
         <table class="table" id='requerimentos'>
             <thead>
@@ -51,13 +53,13 @@ class Requerimento(models.Model):
                     <th>Data</th>
                     <th>Estado</th>
                     <th>Observação</th>
-                    <th>Ações</th>
+                    <th class='col-sm-2'>Ações</th>
                 </tr>
             </thead>
             <tbody>
                 {% for requerimento in requerimentos_cliente %}
                 <tr>
-                    <td>{{ requerimento.NB }}</td>
+                    <td><a href='../requerimento/?NB={{ requerimento.NB }}'> {{ requerimento.NB }}</a></td>
                     <td>{{ requerimento.servico }}</td>
                     <td>{{ requerimento.requerente_dependentes }}</td>
                     <td>{{ requerimento.tutor_curador }}</td>
