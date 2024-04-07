@@ -52,7 +52,7 @@ class Recurso(models.Model):
     def __str__(self) -> str:
         return f'{self.requerimento.servico.nome}: {self.requerimento.requerente_titular.nome}, {self.requerimento.requerente_titular.cpf}, {self.requerimento.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do recurso
     
-class Exigência(models.Model):
+class Exigencia(models.Model):
     id = models.AutoField(primary_key=True) # ID da exigência
     NB = models.ForeignKey(Requerimento, on_delete=models.PROTECT, related_name='NB_exigencia') # Relacionamento com o modelo Requerimento
     protocolo = models.CharField(max_length=20) # Número do protocolo da exigência
