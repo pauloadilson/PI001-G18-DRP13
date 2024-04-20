@@ -2,7 +2,7 @@ from django import forms
 
 from clientes.models import Cliente, Requerimento, Recurso, Exigencia
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
+from crispy_forms.layout import Layout, Submit, Field, Button
 
 
 
@@ -17,10 +17,11 @@ class ClienteModelForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('cpf', css_class='form-control'),
             Field('nome', css_class='form-control'),
-            Field('data_nascimento', css_class='form-control', type='date'),
+            Field('data_nascimento', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('telefone_whatsapp', css_class='form-control'),
             Field('telefone', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary')
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
     def clean_cpf(self):
@@ -40,6 +41,9 @@ class RequerimentoModelForm(forms.ModelForm):
     class Meta:
         model = Requerimento
         fields = '__all__'
+        widgets = {
+            'data': forms.DateInput(attrs={'class': 'date_picker', 'placeholder': 'dd/mm/aaaa'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(RequerimentoModelForm, self).__init__(*args, **kwargs)
@@ -51,10 +55,11 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('requerente_dependentes', css_class='form-control'),
             Field('tutor_curador', css_class='form-control'),
             Field('instituidor', css_class='form-control'),
-            Field('data', css_class='form-control', type='date', placeholder='dd/mm/aaaa'),
+            Field('data', css_class='form-control'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary')
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
     def save(self, commit=True):
@@ -74,7 +79,8 @@ class RecursoModelForm(forms.ModelForm):
             Field('data', css_class='form-control', type='date', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary')
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
     def save(self, commit=True):
@@ -93,7 +99,8 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control', type='date', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary')
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
     def save(self, commit=True):
@@ -113,7 +120,8 @@ class ExigenciaForm(forms.Form):
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control', type='date', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary')
+            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
     def save(self, commit=True):

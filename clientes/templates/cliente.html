@@ -2,7 +2,6 @@
 {% load bootstrap_icons %}
 
 {% block content %}
-    
 <main class="content" >
     <div class="container-fluid ">
         <div class="p-1 mt-3">
@@ -26,21 +25,11 @@
               </dl>
               <hr />
               <p class="d-inline gap-1">
-                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirCliente" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <a class="btn btn-light" href="../novo_requerimento?cpf={{ cliente.cpf }}" role="button">
                     Novo Requerimento
                 </a>
-                    <div class="collapse mt-2" id="inserirCliente">
-                        <form method="post" enctype='multipart/form-data'>
-                            {%  csrf_token %}
-                            {% load crispy_forms_tags %}
-                            {% crispy novo_requerimento_form %}
-                            
-                        </form>  
-                    </div>
-                </div>
+            </div>
         </div>
-        
-
         <div class="p-1">
         <table class="table" id='requerimentos'>
             <thead>

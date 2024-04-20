@@ -25,8 +25,6 @@
                     <dd class="col-sm-9">{{ cliente.telefone }}</dd>
                 </dl>  
         </div>
-        
-        <hr />
         <div class="p-1 mt-3">
             <div class='display-5'>Requerimento</div>
             <hr />
@@ -56,95 +54,70 @@
                     <dd class="col-sm-9">{{ requerimento.observacao }}</dd>
                 </dl>  
         </div>
-        <hr />
         <div class="p-1 mt-3">
             <div class='display-6'>Exigências</div>
             <hr />
-
-            <p class="d-inline gap-1">
-                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirExigencia" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Nova Exigência
-                </a>
-                    <div class="collapse mt-2" id="inserirExigencia">
-                        <form method="post" enctype='multipart/form-data'>
-                            {%  csrf_token %}
-                            {% load crispy_forms_tags %}
-                            {% crispy nova_exigencia_form %}
-
-                            
-                        </form>  
-                    </div>
-            </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Protocolo</th>
-                            <th>Data</th>
-                            <th>Natureza</th>
-                            <th class='col-sm-2'>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for exigencia in exigencias %}
-                        <tr>
-                            <td>{{ exigencia.protocolo }}</td>
-                            <td>{{ exigencia.data }}</td>
-                            <td>{{ exigencia.natureza }}</td>
-                            <td >
-                                <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
-                                <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                                <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-        
-        <hr />
+            <p class="d-inline-flex gap-1">
+            <a class="btn btn-light"   href="../nova_exigencia?NB={{ requerimento.NB }}" role="button">
+                Nova Exigência
+            </a>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Protocolo</th>
+                        <th>Data</th>
+                        <th>Natureza</th>
+                        <th class='col-sm-2'>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exigencia in exigencias %}
+                    <tr>
+                        <td>{{ exigencia.protocolo }}</td>
+                        <td>{{ exigencia.data }}</td>
+                        <td>{{ exigencia.natureza }}</td>
+                        <td >
+                            <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                            <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         <div class="p-1 mt-3">
             <div class='display-6'>Recursos</div>
             <hr />
-
-
-            <p class="d-inline gap-1">
-                <a class="btn btn-light" data-bs-toggle="collapse"  href="#inserirRecurso" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Recurso
-                </a>
-                    <div class="collapse mt-2" id="inserirRecurso">
-                        <form method="post" enctype='multipart/form-data'>
-                            {%  csrf_token %}
-                            {% load crispy_forms_tags %}
-                            {% crispy novo_recurso_form %}
-
-                            
-                        </form>  
-                    </div>
-            </div>
-                <table class="table" id='recursos'>
-                    <thead>
-                        <tr>
-                            <th>Protocolo</th>
-                            <th>Data</th>
-                            <th>Estado</th>
-                            <th>Observação</th>
-                            <th class='col-sm-2'>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recurso in recursos %}
-                        <tr>
-                            <td>{{ recurso.protocolo }}</td>
-                            <td>{{ recurso.data }}</td>
-                            <td>{{ recurso.estado }}</td>
-                            <td>{{ recurso.observacao }}</td>
-                            <td >
-                                <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
-                                <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                                <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
+            <p class="d-inline-flex gap-1">
+            <a class="btn btn-light"   href="../novo_recurso?NB={{ requerimento.NB }}" role="button">
+                Novo Recurso
+             </a>
+            <table class="table" id='recursos'>
+                <thead>
+                    <tr>
+                        <th>Protocolo</th>
+                        <th>Data</th>
+                        <th>Estado</th>
+                        <th>Observação</th>
+                        <th class='col-sm-2'>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recurso in recursos %}
+                    <tr>
+                        <td>{{ recurso.protocolo }}</td>
+                        <td>{{ recurso.data }}</td>
+                        <td>{{ recurso.estado }}</td>
+                        <td>{{ recurso.observacao }}</td>
+                        <td >
+                            <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                            <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 </main>
