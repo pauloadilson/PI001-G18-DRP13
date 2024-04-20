@@ -33,7 +33,6 @@ def novo_cliente_view(request):
         if novo_cliente.is_valid():
             novo_cliente.save()
             return redirect('clientes')
-        print(novo_cliente.data)
     else:
         novo_cliente = ClienteModelForm()
 
