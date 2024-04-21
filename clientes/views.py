@@ -30,22 +30,6 @@ class ClientesView(View):
             }
         )
 
-    def post(self, request):
-        novo_cliente = ClienteModelForm(request.POST)
-        if novo_cliente.is_valid():
-            novo_cliente.save()
-            return redirect('clientes')
-        return render(
-            request, 
-            'novo_cliente.html', 
-            {
-                'title': 'Novo Cliente',
-                'form_name': 'Novo Cliente',
-                'novo_cliente_form': novo_cliente
-            }
-        )
-
-
 class NovoClienteView(View):
     def get(self, request):
         novo_cliente = ClienteModelForm()
