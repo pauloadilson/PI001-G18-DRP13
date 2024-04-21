@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from clientes.models import Cliente, Requerimento
 from clientes.form import ClienteModelForm, RequerimentoModelForm, RecursoModelForm, ExigenciaModelForm
+# from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views import View
 # Create your views here.
 
 def index(request):
@@ -12,44 +14,70 @@ def index(request):
         }
     )
 
-def clientes_view(request):
-    clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
-    busca = request.GET.get('busca') # busca é o nome da chave de busca
-    if busca:
-        clientes = clientes.filter(cpf__icontains=busca).order_by('nome')
+class ClientesView(View):
+    def get(self, request):
+        clientes = Cliente.objects.all() 
+        busca = request.GET.get('busca') 
+        if busca:
+            clientes = clientes.filter(cpf__icontains=busca).order_by('nome')
 
-    return render(
-        request, 
-        'clientes.html', 
-        {
-            'title': 'Clientes',
-            'clientes':clientes
-        }
-    )
+        return render(
+            request, 
+            'clientes.html', 
+            {
+                'title': 'Clientes',
+                'clientes':clientes
+            }
+        )
 
-def novo_cliente_view(request):
-    if request.method == 'POST':
+    def post(self, request):
         novo_cliente = ClienteModelForm(request.POST)
         if novo_cliente.is_valid():
             novo_cliente.save()
             return redirect('clientes')
-    else:
-        novo_cliente = ClienteModelForm()
+        return render(
+            request, 
+            'novo_cliente.html', 
+            {
+                'title': 'Novo Cliente',
+                'form_name': 'Novo Cliente',
+                'novo_cliente_form': novo_cliente
+            }
+        )
 
-    return render(
-        request, 
-        'novo_cliente.html', 
-        {
-            'title': 'Novo Cliente',
-            'form_name': 'Novo Cliente',
-            'novo_cliente_form': novo_cliente
-        }
-    )
+
+class NovoClienteView(View):
+    def get(self, request):
+        novo_cliente = ClienteModelForm()
+        return render(
+            request, 
+            'novo_cliente.html', 
+            {
+                'title': 'Novo Cliente',
+                'form_name': 'Novo Cliente',
+                'novo_cliente_form': novo_cliente
+            }
+        )
+
+    def post(self, request):
+        novo_cliente = ClienteModelForm(request.POST)
+        if novo_cliente.is_valid():
+            novo_cliente.save()
+            cliente_id = novo_cliente.cleaned_data.get('cpf')
+            return redirect(f'../cliente/?cpf={cliente_id}')
+        return render(
+            request, 
+            'novo_cliente.html', 
+            {
+                'title': 'Novo Cliente',
+                'form_name': 'Novo Cliente',
+                'novo_cliente_form': novo_cliente
+            }
+        )
 
 def cliente_view(request):
     clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
     cliente_id = request.GET.get('cpf') # busca é o nome da chave de busca
-#    cliente_id = '35307319860' # busca é o nome da chave de busca
     requerimentos = Requerimento.objects.all()
     cliente = clientes.filter(cpf__icontains=cliente_id)[0]
     requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
@@ -72,7 +100,7 @@ def novo_requerimento_view(request):
         novo_requerimento = RequerimentoModelForm(request.POST or None)
         if novo_requerimento.is_valid():
             novo_requerimento.save()
-            return redirect(f'cliente/?cpf={cliente_id}')
+            return redirect(f'../cliente/?cpf={cliente_id}')
     else:
         novo_requerimento = RequerimentoModelForm()
 
@@ -86,42 +114,15 @@ def novo_requerimento_view(request):
         }
     )
 
-
-
-
 def requerimento_view(request):
     requerimentos = Requerimento.objects.all() # .order_by('nome') '-nome' para ordem decrescente
     nb = request.GET.get('NB') # busca é o nome da chave de busca
     requerimento = requerimentos.filter(NB__icontains=nb)[0]
     requerimento_titular_id = requerimento.requerente_titular.cpf
     clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
-    cliente = clientes.filter(cpf__icontains=requerimento_titular_id)[0]
-
+    cliente = clientes.filter(cpf__icontains=requerimento_titular_id)[0] 
     exigencias = requerimento.NB_exigencia.all()
     recursos = requerimento.NB_recurso.all()
-
-    exigencias = [{
-                'NB': requerimento.NB,
-                'protocolo': '20210058745',
-                'data': '01/07/2021',
-                'natureza': 'Falta documentação'
-            }]
-    recursos =         [{
-                'NB': requerimento.NB,
-                'protocolo': '20214578587',
-                'data': '10/10/2021',
-                'estado': 'Concluído',
-                'observacao': 'Grupo de recursos do INSS',
-            },
-            {
-                'NB': requerimento.NB,
-                'protocolo': '20227896554',
-                'data': '02/02/2022',
-                'estado': 'Em análise',
-                'observacao': 'Conselho de recurso do INSS',
-                'natureza': 'Documentação'
-            }]
-            
         
     return render(
         request, 
@@ -141,7 +142,7 @@ def nova_exigencia_view(request):
         nova_exigencia = ExigenciaModelForm(request.POST)
         if nova_exigencia.is_valid():
             nova_exigencia.save()
-            return redirect(f'requerimento/?NB={NB}')
+            return redirect(f'../requerimento/?NB={NB}')
     else:
         nova_exigencia = ExigenciaModelForm()
 
@@ -161,9 +162,9 @@ def novo_recurso_view(request):
         novo_recurso = RecursoModelForm(request.POST)
         if novo_recurso.is_valid():
             novo_recurso.save()
-            return redirect(f'requerimento/?NB={NB}')
+            return redirect(f'../requerimento/?NB={NB}')
     else:
-        novo_recurso = ExigenciaModelForm()
+        novo_recurso = RecursoModelForm()
 
     return render(
         request, 

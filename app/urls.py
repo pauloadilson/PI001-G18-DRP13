@@ -18,14 +18,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from clientes.views import clientes_view, index, requerimento_view, cliente_view, novo_cliente_view, novo_requerimento_view, nova_exigencia_view, novo_recurso_view
+from clientes.views import index, ClientesView, NovoClienteView, requerimento_view, cliente_view,  novo_requerimento_view, nova_exigencia_view, novo_recurso_view
 
 
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
-    path('clientes/', clientes_view, name='clientes'),
-    path('novo_cliente/', novo_cliente_view, name='novo_cliente'),
+    path('clientes/', ClientesView.as_view(), name='clientes'),
+    path('novo_cliente/', NovoClienteView.as_view(), name='novo_cliente'),
     path('cliente/', cliente_view, name='cliente'),
     path('novo_requerimento/', novo_requerimento_view, name='novo_requerimento'),
     path('requerimento/', requerimento_view, name='requerimento'),

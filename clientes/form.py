@@ -69,7 +69,7 @@ class ExigenciaModelForm(forms.ModelForm):
         super(ExigenciaModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('NB', css_class='form-control', ),
+            Field('NB', css_class='form-control'),
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
@@ -89,6 +89,7 @@ class RecursoModelForm(forms.ModelForm):
         super(RecursoModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
+            Field('NB', css_class='form-control'),
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
