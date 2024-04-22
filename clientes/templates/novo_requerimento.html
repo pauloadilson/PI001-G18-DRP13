@@ -1,7 +1,0 @@
-{% extends 'form_base.html' %}
-
-{% block novo_form %}
-        {%  csrf_token %}
-        {% load crispy_forms_tags %}
-        {% crispy novo_requerimento_form %} 
-{% endblock novo_form %}

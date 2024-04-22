@@ -25,7 +25,7 @@
               </dl>
               <hr />
               <p class="d-inline gap-1">
-                <a class="btn btn-light" href="../novo_requerimento?cpf={{ cliente.cpf }}" role="button">
+                <a class="btn btn-light" href="{% url 'novo_requerimento' %}" role="button">
                     Novo Requerimento
                 </a>
             </div>
@@ -48,7 +48,7 @@
             <tbody>
                 {% for requerimento in requerimentos_cliente %}
                 <tr>
-                    <td><a href='../requerimento/?NB={{ requerimento.NB }}'> {{ requerimento.NB }}</a></td>
+                    <td><a href="{% url 'requerimento' requerimento.NB %}"> {{ requerimento.NB }}</a></td>
                     <td>{{ requerimento.servico }}</td>
                     <td>{{ requerimento.requerente_dependentes }}</td>
                     <td>{{ requerimento.tutor_curador }}</td>

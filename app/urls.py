@@ -18,18 +18,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from clientes.views import index, ClientesView, NovoClienteView, requerimento_view, cliente_view,  novo_requerimento_view, nova_exigencia_view, novo_recurso_view
+from clientes.views import IndexView, ClientesListView, ClienteCreateView, ClienteDetailView, RequerimentoDetailView,  RequerimentoCreateView, ExigenciaCreateView, RecursoCreateView
 
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
-    path('clientes/', ClientesView.as_view(), name='clientes'),
-    path('novo_cliente/', NovoClienteView.as_view(), name='novo_cliente'),
-    path('cliente/', cliente_view, name='cliente'),
-    path('novo_requerimento/', novo_requerimento_view, name='novo_requerimento'),
-    path('requerimento/', requerimento_view, name='requerimento'),
-    path('nova_exigencia/', nova_exigencia_view, name='nova_exigencia'),
-    path('novo_recurso/', novo_recurso_view, name='novo_recurso'),
+    path('clientes/', ClientesListView.as_view(), name='clientes'),
+    path('novo_cliente/', ClienteCreateView.as_view(), name='novo_cliente'),
+    path('cliente/<int:pk>/', ClienteDetailView.as_view(), name='cliente'),
+    path('novo_requerimento/', RequerimentoCreateView.as_view(), name='novo_requerimento'),
+    path('requerimento/<int:NB>', RequerimentoDetailView.as_view(), name='requerimento'),
+    path('nova_exigencia/', ExigenciaCreateView.as_view(), name='nova_exigencia'),
+    path('novo_recurso/', RecursoCreateView.as_view(), name='novo_recurso'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

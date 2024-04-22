@@ -29,7 +29,7 @@ class Requerimento(models.Model):
     id = models.AutoField(primary_key=True) # ID do requerimento
     requerente_titular = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_titular_requerimento') # Relacionamento com o modelo Cliente
     servico = models.ForeignKey(Servico, on_delete=models.PROTECT, related_name='servico_requerimento') # Serviço solicitado Ex: Aposentadoria por idade
-    NB = models.CharField(max_length=20, blank=True, null=True) # Número do benefício do cliente
+    NB = models.SlugField(max_length=20, unique=True) # Número do benefício do cliente
     requerente_dependentes = models.TextField(blank=True, null=True) #.ManyToManyField(Cliente, related_name='cliente_dependente_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
     tutor_curador = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_tutor_curador_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
     instituidor = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_instituidor_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
@@ -50,7 +50,7 @@ class Recurso(models.Model):
     observacao = models.TextField() # Observações do recurso
 
     def __str__(self) -> str:
-        return f'{self.requerimento.servico.nome}: {self.requerimento.requerente_titular.nome}, {self.requerimento.requerente_titular.cpf}, {self.requerimento.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do recurso
+        return f'{self.NB.servico.nome}: {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}, {self.NB.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do recurso
     
 class Exigencia(models.Model):
     id = models.AutoField(primary_key=True) # ID da exigência
@@ -60,6 +60,8 @@ class Exigencia(models.Model):
     prazo_em_dias = 30 # Prazo para resposta da exigência
     natureza = models.ForeignKey('Natureza', on_delete=models.PROTECT, related_name='natureza_exigencia') # Natureza da exigência Ex: Documentação, Informação
 
+    def __str__(self) -> str:
+        return f'{self.NB.servico.nome}: {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}, {self.NB.requerente_titular.data_nascimento}'
 class Natureza(models.Model):
     id = models.AutoField(primary_key=True) # ID da natureza
     nome = models.CharField(max_length=100) # Nome da natureza Ex: Documentação, Informação

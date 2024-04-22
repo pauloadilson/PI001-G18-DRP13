@@ -1,161 +1,125 @@
-from django.shortcuts import render, redirect
-from clientes.models import Cliente, Requerimento
+from clientes.models import Cliente, Requerimento, Exigencia, Recurso
 from clientes.form import ClienteModelForm, RequerimentoModelForm, RecursoModelForm, ExigenciaModelForm
-# from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.views import View
+from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
 # Create your views here.
 
-def index(request):
-    return render(
-        request, 
-        'index.html', 
-        {
-            'title': 'Página inicial',
-        }
-    )
+class IndexView(TemplateView):
+    template_name = 'index.html'
+    page_title = 'Página inicial'
 
-class ClientesView(View):
-    def get(self, request):
-        clientes = Cliente.objects.all() 
-        busca = request.GET.get('busca') 
+    def get_context_data(self, **kwargs) -> dict[str, any]:
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        return context
+
+class ClientesListView(ListView):
+    model = Cliente
+    template_name = 'clientes.html'
+    context_object_name = 'clientes'
+    page_title = 'Clientes'
+    ordering = ['nome']
+    paginate_by = 10
+
+    def get_queryset(self):
+        clientes = super().get_queryset()
+        busca = self.request.GET.get('busca') 
         if busca:
-            clientes = clientes.filter(cpf__icontains=busca).order_by('nome')
-
-        return render(
-            request, 
-            'clientes.html', 
-            {
-                'title': 'Clientes',
-                'clientes':clientes
-            }
-        )
-
-class NovoClienteView(View):
-    def get(self, request):
-        novo_cliente = ClienteModelForm()
-        return render(
-            request, 
-            'novo_cliente.html', 
-            {
-                'title': 'Novo Cliente',
-                'form_name': 'Novo Cliente',
-                'novo_cliente_form': novo_cliente
-            }
-        )
-
-    def post(self, request):
-        novo_cliente = ClienteModelForm(request.POST)
-        if novo_cliente.is_valid():
-            novo_cliente.save()
-            cliente_id = novo_cliente.cleaned_data.get('cpf')
-            return redirect(f'../cliente/?cpf={cliente_id}')
-        return render(
-            request, 
-            'novo_cliente.html', 
-            {
-                'title': 'Novo Cliente',
-                'form_name': 'Novo Cliente',
-                'novo_cliente_form': novo_cliente
-            }
-        )
-
-def cliente_view(request):
-    clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
-    cliente_id = request.GET.get('cpf') # busca é o nome da chave de busca
-    requerimentos = Requerimento.objects.all()
-    cliente = clientes.filter(cpf__icontains=cliente_id)[0]
-    requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
-
-
-    return render(
-        request, 
-        'cliente.html', 
-        {
-            'title': f'Cliente {cliente_id}',
-            'cliente':cliente,
-            'requerimentos_cliente':requerimentos_cliente,
-        }
-    )
-
-def novo_requerimento_view(request):
-    cliente_id = request.GET.get('cpf') # busca é o nome da chave de busca
+            clientes = clientes.filter(cpf__icontains=busca)
+        return clientes
     
-    if request.method == 'POST':
-        novo_requerimento = RequerimentoModelForm(request.POST or None)
-        if novo_requerimento.is_valid():
-            novo_requerimento.save()
-            return redirect(f'../cliente/?cpf={cliente_id}')
-    else:
-        novo_requerimento = RequerimentoModelForm()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        return context
 
-    return render(
-        request, 
-        'novo_requerimento.html', 
-        {
-            'title': 'Novo Requerimento',
-            'form_name': 'Novo Requerimento',
-            'novo_requerimento_form': novo_requerimento
-        }
-    )
+class ClienteCreateView(CreateView):
+    model = Cliente
+    template_name = 'form.html'
+    form_class = ClienteModelForm
+    page_title = 'Novo Cliente'
+    form_title = 'Novo Cliente'
+    cliente_id = form_class.clean_cpf
+    success_url = f'../cliente/?cpf={cliente_id}'
 
-def requerimento_view(request):
-    requerimentos = Requerimento.objects.all() # .order_by('nome') '-nome' para ordem decrescente
-    nb = request.GET.get('NB') # busca é o nome da chave de busca
-    requerimento = requerimentos.filter(NB__icontains=nb)[0]
-    requerimento_titular_id = requerimento.requerente_titular.cpf
-    clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
-    cliente = clientes.filter(cpf__icontains=requerimento_titular_id)[0] 
-    exigencias = requerimento.NB_exigencia.all()
-    recursos = requerimento.NB_recurso.all()
-        
-    return render(
-        request, 
-        'requerimento.html', 
-        {
-            'title': 'Requerimentos',
-            'requerimento':requerimento,
-            'cliente':cliente,
-            'exigencias': exigencias,
-            'recursos': recursos,
-        }
-    )
+    def get_context_data(self, **kwargs):
+        context = super(ClienteCreateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = self.form_title
+        return context
 
-def nova_exigencia_view(request):
-    NB = request.GET.get('NB')
-    if request.method == 'POST':
-        nova_exigencia = ExigenciaModelForm(request.POST)
-        if nova_exigencia.is_valid():
-            nova_exigencia.save()
-            return redirect(f'../requerimento/?NB={NB}')
-    else:
-        nova_exigencia = ExigenciaModelForm()
+class ClienteDetailView(DetailView):
+    model = Cliente
+    template_name = 'cliente.html'
+    context_object_name = 'cliente'
 
-    return render(
-        request, 
-        'nova_exigencia.html', 
-        {
-            'title': 'Nova Exigência',
-            'form_name': 'Nova Exigência',
-            'nova_exigencia_form': nova_exigencia
-        }
-    )
+    def get_context_data(self, **kwargs):
+        context = super(ClienteDetailView, self).get_context_data(**kwargs)
+        cliente_id = self.object.cpf
+        page_title = f'Cliente {cliente_id}'
+        requerimentos = Requerimento.objects.all()
+        requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
+        context["page_title"] = page_title
+        context["requerimentos_cliente"] = requerimentos_cliente
+        return context
+    
+class RequerimentoCreateView(CreateView):
+    model = Requerimento
+    template_name = 'form.html'
+    form_class = RequerimentoModelForm
+    page_title = 'Novo Requerimento'
+    form_title = 'Novo Requerimento'
 
-def novo_recurso_view(request):
-    NB = request.GET.get('NB')
-    if request.method == 'POST':
-        novo_recurso = RecursoModelForm(request.POST)
-        if novo_recurso.is_valid():
-            novo_recurso.save()
-            return redirect(f'../requerimento/?NB={NB}')
-    else:
-        novo_recurso = RecursoModelForm()
+    def get_context_data(self, **kwargs):
+        context = super(RequerimentoCreateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = self.form_title
+        return context
+    
+class RequerimentoDetailView(DetailView):
+    model = Requerimento
+    slug_field = 'NB'
+    slug_url_kwarg = 'NB'
+    template_name = 'requerimento.html'
+    context_object_name = 'requerimento'
+    page_title = 'Requerimento'
+    paginate_by = 10
 
-    return render(
-        request, 
-        'novo_recurso.html', 
-        {
-            'title': 'Novo Recurso',
-            'form_name': 'Novo Recurso',
-            'novo_recurso_form': novo_recurso
-        }
-    )
+    cliente_id = None
+    
+    def get_context_data(self, **kwargs):
+        context = super(RequerimentoDetailView, self).get_context_data(**kwargs)
+        cliente_id = self.object.requerente_titular.cpf
+        clientes = Cliente.objects.all() # .order_by('nome') '-nome' para ordem decrescente
+        cliente = clientes.filter(cpf__icontains=cliente_id)[0]
+        exigencias = self.object.NB_exigencia.all()
+        recursos = self.object.NB_recurso.all()
+        context["page_title"] = self.page_title
+        context["cliente"] = cliente
+        context["exigencias"] = exigencias
+        context["recursos"] = recursos
+        return context
+    
+class ExigenciaCreateView(CreateView):
+    model = Exigencia
+    template_name = 'form.html'
+    form_class = ExigenciaModelForm
+    page_title = 'Nova Exigência'
+    form_title = 'Nova Exigência'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ExigenciaCreateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = self.form_title
+        return context
+class RecursoCreateView(CreateView):
+    model = Recurso
+    template_name = 'form.html'
+    form_class = RecursoModelForm
+    page_title = 'Novo Recurso'
+    form_title = 'Novo Recurso'
+    
+    def get_context_data(self, **kwargs):
+        context = super(RecursoCreateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = self.form_title
+        return context
