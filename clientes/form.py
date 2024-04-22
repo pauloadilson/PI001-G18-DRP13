@@ -44,13 +44,13 @@ class RequerimentoModelForm(forms.ModelForm):
         super(RequerimentoModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('requerente_titular', css_class='form-control'),
+            Field('requerente_titular', css_class='form-control', type='hidden'),
             Field('servico', css_class='form-control'),
             Field('NB', css_class='form-control'),
             Field('requerente_dependentes', css_class='form-control'),
             Field('tutor_curador', css_class='form-control'),
             Field('instituidor', css_class='form-control'),
-            Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaa4'),
+            Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
@@ -69,7 +69,7 @@ class ExigenciaModelForm(forms.ModelForm):
         super(ExigenciaModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('NB', css_class='form-control'),
+            Field('NB', css_class='form-control', type='hidden'),
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
@@ -89,7 +89,7 @@ class RecursoModelForm(forms.ModelForm):
         super(RecursoModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('NB', css_class='form-control'),
+            Field('NB', css_class='form-control', type='hidden'),
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),

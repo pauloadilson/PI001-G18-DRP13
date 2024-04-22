@@ -38,8 +38,6 @@ class ClienteCreateView(CreateView):
     form_class = ClienteModelForm
     page_title = 'Novo Cliente'
     form_title = 'Novo Cliente'
-    cliente_id = form_class.clean_cpf
-    success_url = f'../cliente/?cpf={cliente_id}'
 
     def get_context_data(self, **kwargs):
         context = super(ClienteCreateView, self).get_context_data(**kwargs)
@@ -68,11 +66,25 @@ class RequerimentoCreateView(CreateView):
     form_class = RequerimentoModelForm
     page_title = 'Novo Requerimento'
     form_title = 'Novo Requerimento'
+    form_title_identificador = None
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['requerente_titular'] = Cliente.objects.get(cpf=self.kwargs['cpf'])
+        return initial
+    
+    def form_valid(self, form):
+        form.instance.requerente_titular = Cliente.objects.get(cpf=self.kwargs['cpf'])
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return f'../cliente/{self.kwargs["cpf"]}'
+    
     def get_context_data(self, **kwargs):
         context = super(RequerimentoCreateView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
-        context["form_title"] = self.form_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'CPF nº {self.kwargs["cpf"]}'
         return context
     
 class RequerimentoDetailView(DetailView):
@@ -99,27 +111,41 @@ class RequerimentoDetailView(DetailView):
         context["recursos"] = recursos
         return context
     
-class ExigenciaCreateView(CreateView):
-    model = Exigencia
+class IncidenteCreateView(CreateView):
+    model = None
     template_name = 'form.html'
+    form_class = None
+    page_title = 'Novo Incidente'
+    form_title = 'Novo Incidente'
+    form_title_identificador = None
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['NB'] = Requerimento.objects.get(NB=self.kwargs['NB'])
+        return initial
+
+    def form_valid(self, form):
+        form.instance.NB = Requerimento.objects.get(NB=self.kwargs['NB'])
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return f'../requerimento/{self.kwargs["NB"]}'
+    
+    def get_context_data(self, **kwargs):
+        context = super(IncidenteCreateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = self.form_title
+        context["form_title_identificador"] = f'NB nº {self.kwargs["NB"]}'
+        return context
+    
+class ExigenciaCreateView(IncidenteCreateView):
+    model = Exigencia
     form_class = ExigenciaModelForm
     page_title = 'Nova Exigência'
     form_title = 'Nova Exigência'
     
-    def get_context_data(self, **kwargs):
-        context = super(ExigenciaCreateView, self).get_context_data(**kwargs)
-        context["page_title"] = self.page_title
-        context["form_title"] = self.form_title
-        return context
-class RecursoCreateView(CreateView):
+class RecursoCreateView(IncidenteCreateView):
     model = Recurso
-    template_name = 'form.html'
     form_class = RecursoModelForm
     page_title = 'Novo Recurso'
     form_title = 'Novo Recurso'
-    
-    def get_context_data(self, **kwargs):
-        context = super(RecursoCreateView, self).get_context_data(**kwargs)
-        context["page_title"] = self.page_title
-        context["form_title"] = self.form_title
-        return context

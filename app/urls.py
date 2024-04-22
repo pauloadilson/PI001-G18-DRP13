@@ -27,9 +27,9 @@ urlpatterns = [
     path('clientes/', ClientesListView.as_view(), name='clientes'),
     path('novo_cliente/', ClienteCreateView.as_view(), name='novo_cliente'),
     path('cliente/<int:pk>/', ClienteDetailView.as_view(), name='cliente'),
-    path('novo_requerimento/', RequerimentoCreateView.as_view(), name='novo_requerimento'),
+    path('novo_requerimento/<int:cpf>', RequerimentoCreateView.as_view(), name='novo_requerimento'),
     path('requerimento/<int:NB>', RequerimentoDetailView.as_view(), name='requerimento'),
-    path('nova_exigencia/', ExigenciaCreateView.as_view(), name='nova_exigencia'),
-    path('novo_recurso/', RecursoCreateView.as_view(), name='novo_recurso'),
+    path('nova_exigencia/<int:NB>', ExigenciaCreateView.as_view(), name='nova_exigencia'),
+    path('novo_recurso/<int:NB>', RecursoCreateView.as_view(), name='novo_recurso'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
