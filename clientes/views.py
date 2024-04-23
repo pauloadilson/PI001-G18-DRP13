@@ -38,6 +38,8 @@ class ClienteCreateView(CreateView):
     form_class = ClienteModelForm
     page_title = 'Novo Cliente'
     form_title = 'Novo Cliente'
+    success_url = '/clientes/'
+    
 
     def get_context_data(self, **kwargs):
         context = super(ClienteCreateView, self).get_context_data(**kwargs)
