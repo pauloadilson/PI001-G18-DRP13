@@ -4,13 +4,13 @@ from .models import Cliente, Recurso, Exigencia, Requerimento, Estado, Servico, 
 # Register your models here.
 
 class ClienteAdmin(admin.ModelAdmin):
-    list_display = ('cpf', 'nome', 'data_nascimento', 'telefone_whatsapp', 'telefone')
+    list_display = ('cpf', 'nome', 'data_nascimento', 'telefone_whatsapp', 'telefone', 'arquivo_do_cliente')
     search_fields = ('cpf', 'nome')
 
 admin.site.register(Cliente, ClienteAdmin) # Registra o modelo Cliente no admin do Django da Classe Cliente e da configuração ClienteAdmin
 
 class RequerimentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'requerente_titular','NB','servico',  'requerente_dependentes', 'tutor_curador', 'instituidor', 'data', 'estado',  'observacao')
+    list_display = ('id', 'requerente_titular','NB','servico',  'requerente_dependentes', 'tutor_curador', 'instituidor', 'data', 'estado',  'observacao', 'arquivo_do_requerimento')
     search_fields = ('id', 'NB', 'requerente_titular__nome', 'requererente_titular__cpf')
 
 admin.site.register(Requerimento, RequerimentoAdmin) # Registra o modelo Requerimento no admin do Django da Classe Requerimento e da configuração RequerimentoAdmin
@@ -28,13 +28,13 @@ class ServicoAdmin(admin.ModelAdmin):
 admin.site.register(Servico, ServicoAdmin) # Registra o modelo Servico no admin do Django da Classe Servico e da configuração ServicoAdmin
 
 class RecursoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'estado', 'observacao')
+    list_display = ('id', 'NB', 'protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
     search_fields = ('NB', 'protocolo')
 
 admin.site.register(Recurso, RecursoAdmin) # Registra o modelo Recurso no admin do Django da Classe Recurso e da configuração RecursoAdmin
 
 class ExigenciaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'natureza')
+    list_display = ('id', 'NB', 'protocolo', 'data', 'natureza', 'arquivo_da_exigencia')
     search_fields = ('NB', 'protocolo') # 'NB__requerente_titular__nome', 'NB__requerente_titular__cpf
 
 admin.site.register(Exigencia, ExigenciaAdmin) # Registra o modelo Exigencia no admin do Django da Classe Exigencia e da configuração ExigenciaAdmin

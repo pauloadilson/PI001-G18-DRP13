@@ -77,7 +77,7 @@
                         <td>{{ exigencia.data }}</td>
                         <td>{{ exigencia.natureza }}</td>
                         <td >
-                            <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                            <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                             <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
@@ -110,7 +110,7 @@
                         <td>{{ recurso.estado }}</td>
                         <td>{{ recurso.observacao }}</td>
                         <td >
-                            <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                            <a href="{{ recurso.arquivo_do_recurso.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                             <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>

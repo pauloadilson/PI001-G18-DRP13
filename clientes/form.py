@@ -19,6 +19,7 @@ class ClienteModelForm(forms.ModelForm):
             Field('data_nascimento', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('telefone_whatsapp', css_class='form-control'),
             Field('telefone', css_class='form-control'),
+            Field('arquivo_do_cliente', css_class='form-control'),
             Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
@@ -53,6 +54,7 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
+            Field('arquivo_do_requerimento', css_class='form-control'),
             Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
@@ -63,7 +65,7 @@ class RequerimentoModelForm(forms.ModelForm):
 class ExigenciaModelForm(forms.ModelForm):
     class Meta:
         model = Exigencia
-        fields = ('NB', 'protocolo', 'data', 'natureza')
+        fields = ('NB', 'protocolo', 'data', 'natureza', 'arquivo_da_exigencia')
 
     def __init__(self, *args, **kwargs):
         super(ExigenciaModelForm, self).__init__(*args, **kwargs)
@@ -73,6 +75,7 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
+            Field('arquivo_da_exigencia', css_class='form-control'),
             Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
@@ -83,7 +86,7 @@ class ExigenciaModelForm(forms.ModelForm):
 class RecursoModelForm(forms.ModelForm):
     class Meta:
         model = Recurso
-        fields = ('NB', 'protocolo', 'data', 'estado', 'observacao')
+        fields = ('NB', 'protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
 
     def __init__(self, *args, **kwargs):
         super(RecursoModelForm, self).__init__(*args, **kwargs)
@@ -94,6 +97,7 @@ class RecursoModelForm(forms.ModelForm):
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
+            Field('arquivo_do_recurso', css_class='form-control'),
             Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )

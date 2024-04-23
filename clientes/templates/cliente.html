@@ -57,9 +57,10 @@
                     <td>{{ requerimento.estado }}</td>
                     <td>{{ requerimento.observacao }}</td>
                     <td >
-                        <a href="" class="btn btn-primary">{% bs_icon 'file-pdf' size='1em' %}</a>
+                        <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                         <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

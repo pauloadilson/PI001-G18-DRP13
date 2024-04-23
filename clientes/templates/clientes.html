@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load bootstrap_icons %}
+
         
 {% block content %}
 {% load bootstrap5 %}
@@ -22,6 +24,7 @@
                     <th>Data de Nascimento</th>
                     <th>Telefone</th>
                     <th>WhatsApp</th>
+                    <th>Ações</th>	
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +35,11 @@
                     <td>{{ cliente.data_nascimento }}</td>
                     <td>{{ cliente.telefone_whatsapp }}</td>
                     <td>{{ cliente.telefone }}</td>
+                    <td >
+                        <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
+                        <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                        <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    </td>
                     
                 </tr>
                 {% endfor %}
