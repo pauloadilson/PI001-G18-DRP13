@@ -26,7 +26,13 @@
                 </dl>  
         </div>
         <div class="p-1 mt-3">
-            <div class='display-5'>Requerimento</div>
+            <div class='row'>
+                <div class='display-5 col-sm-9'>Requerimento</div>
+                <div class='display-5 col-sm-3'>
+                    <a href="{% url 'update_requerimento' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                    <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                </div>
+            </div>
             <hr />
                 <dl class="row">
                     <dt class="col-sm-3">NB</dt>
@@ -78,7 +84,7 @@
                         <td>{{ exigencia.natureza }}</td>
                         <td >
                             <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
-                            <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="{% url 'update_exigencia' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
@@ -111,7 +117,7 @@
                         <td>{{ recurso.observacao }}</td>
                         <td >
                             <a href="{{ recurso.arquivo_do_recurso.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
-                            <a href="" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="{% url 'update_recurso' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}

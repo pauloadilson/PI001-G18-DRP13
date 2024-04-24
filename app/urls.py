@@ -18,7 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from clientes.views import IndexView, ClientesListView, ClienteCreateView, ClienteDetailView, RequerimentoDetailView,  RequerimentoCreateView, ExigenciaCreateView, RecursoCreateView
+from clientes.views import IndexView, ClientesListView, ClienteCreateView, ClienteUpdateView, ClienteDetailView, RequerimentoDetailView,  RequerimentoCreateView, RequerimentoUpdateView, ExigenciaCreateView, ExigenciaUpdateView, RecursoCreateView, RecursoUpdateView
 
 
 urlpatterns = [
@@ -27,9 +27,15 @@ urlpatterns = [
     path('clientes/', ClientesListView.as_view(), name='clientes'),
     path('novo_cliente/', ClienteCreateView.as_view(), name='novo_cliente'),
     path('cliente/<int:pk>/', ClienteDetailView.as_view(), name='cliente'),
+    path('cliente/<int:pk>/update', ClienteUpdateView.as_view(), name='update_cliente'),
     path('novo_requerimento/<int:cpf>', RequerimentoCreateView.as_view(), name='novo_requerimento'),
     path('requerimento/<int:NB>', RequerimentoDetailView.as_view(), name='requerimento'),
-    path('nova_exigencia/<int:NB>', ExigenciaCreateView.as_view(), name='nova_exigencia'),
-    path('novo_recurso/<int:NB>', RecursoCreateView.as_view(), name='novo_recurso'),
+    path('requerimento/<int:NB>/update', RequerimentoUpdateView.as_view(), name='update_requerimento'),
+    path('nova_exigencia/<int:pk>', ExigenciaCreateView.as_view(), name='nova_exigencia'),
+    path('exigencia/<int:pk>/update', ExigenciaUpdateView.as_view(), name='update_exigencia'),
+    path('novo_recurso/<int:pk>', RecursoCreateView.as_view(), name='novo_recurso'),
+    path('recurso/<int:pk>/update', RecursoUpdateView.as_view(), name='update_recurso'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

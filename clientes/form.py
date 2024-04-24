@@ -20,7 +20,7 @@ class ClienteModelForm(forms.ModelForm):
             Field('telefone_whatsapp', css_class='form-control'),
             Field('telefone', css_class='form-control'),
             Field('arquivo_do_cliente', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Submit('submit', 'Salvar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
@@ -29,8 +29,10 @@ class ClienteModelForm(forms.ModelForm):
         clientes = Cliente.objects.all() 
         if len(cpf) != 11:
             raise forms.ValidationError('CPF deve conter 11 dígitos')
-        if cpf in [cliente.cpf for cliente in clientes]:
+        if (isinstance(self.instance, Cliente) and Cliente.objects.filter(cpf=cpf).exclude(pk=self.instance.pk).exists()):
             raise forms.ValidationError('CPF já cadastrado')
+        #if cpf in [cliente.cpf for cliente in clientes]:
+        #    raise forms.ValidationError('CPF já cadastrado')
         return cpf
 
     def save(self, commit=True):
@@ -55,8 +57,9 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_requerimento', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Submit('submit', 'Salvar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
+
         )
 
     def save(self, commit=True):

@@ -47,6 +47,24 @@ class ClienteCreateView(CreateView):
         context["form_title"] = self.form_title
         return context
 
+class ClienteUpdateView(UpdateView):
+    model = Cliente
+    template_name = 'form.html'
+    form_class = ClienteModelForm
+    page_title = 'Editando Cliente'
+    form_title = 'Editando Cliente'
+    form_title_identificador = None
+
+    def get_success_url(self):
+        return f'/cliente/{self.object.cpf}'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ClienteUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'CPF nº {self.object.cpf}'
+        return context
+
 class ClienteDetailView(DetailView):
     model = Cliente
     template_name = 'cliente.html'
@@ -87,6 +105,33 @@ class RequerimentoCreateView(CreateView):
         context["page_title"] = self.page_title
         context["form_title"] = f'{self.form_title}'
         context["form_title_identificador"] = f'CPF nº {self.kwargs["cpf"]}'
+        return context
+    
+class RequerimentoUpdateView(UpdateView):
+    model = Requerimento
+    template_name = 'form.html'
+    form_class = RequerimentoModelForm
+    page_title = 'Editando Requerimento'
+    form_title = 'Editando Requerimento'
+    form_title_identificador = None
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['requerente_titular'] = Cliente.objects.get(cpf=self.kwargs['cpf'])
+        return initial
+    
+    def form_valid(self, form):
+        form.instance.requerente_titular = Cliente.objects.get(cpf=self.kwargs['cpf'])
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return f'../requerimento/{self.object.NB}'
+    
+    def get_context_data(self, **kwargs):
+        context = super(RequerimentoUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'NB nº {self.object.NB}'
         return context
     
 class RequerimentoDetailView(DetailView):
@@ -145,9 +190,45 @@ class ExigenciaCreateView(IncidenteCreateView):
     form_class = ExigenciaModelForm
     page_title = 'Nova Exigência'
     form_title = 'Nova Exigência'
+
+class ExigenciaUpdateView(UpdateView):
+    model = Exigencia
+    template_name = 'form.html'
+    form_class = ExigenciaModelForm
+    page_title = 'Editando Exigência'
+    form_title = 'Editando Exigência'
+    form_title_identificador = None
+
+    def get_success_url(self):
+        return f'../requerimento/{self.object.NB}'
     
+    def get_context_data(self, **kwargs):
+        context = super(ExigenciaUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'NB nº {self.object.NB}'
+        return context
+
 class RecursoCreateView(IncidenteCreateView):
     model = Recurso
     form_class = RecursoModelForm
     page_title = 'Novo Recurso'
     form_title = 'Novo Recurso'
+
+class RecursoUpdateView(UpdateView):
+    model = Recurso
+    template_name = 'form.html'
+    form_class = RecursoModelForm
+    page_title = 'Editando Recurso'
+    form_title = 'Editando Recurso'
+    form_title_identificador = None
+
+    def get_success_url(self):
+        return f'../requerimento/{self.object.NB}'
+    
+    def get_context_data(self, **kwargs):
+        context = super(RecursoUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'NB nº {self.object.NB}'
+        return context

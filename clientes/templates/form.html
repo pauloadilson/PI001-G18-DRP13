@@ -9,12 +9,11 @@
                 <span class="text-muted h5">para {{ form_title_identificador }}</span>{%  endif %}</div>
             <hr />
         </div>
-        <div class="mt-2" id="inserirExigencia">
+        <div class="mt-2" id="inserir">
             <form method="post" enctype='multipart/form-data'>
                 {%  csrf_token %}
                 {% load crispy_forms_tags %}
                 {% crispy form %} 
-                
             </form>  
 
         </div>
