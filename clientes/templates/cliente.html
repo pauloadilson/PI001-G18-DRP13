@@ -6,8 +6,11 @@
     <div class="container-fluid ">
         <div class="p-1 mt-3">
             <div class='row'>
-                <div class='display-5 col-sm-9'>Cliente</div>
-                <div class='display-5 col-sm-3'>
+                <div class='display-5 col-sm-8'>Cliente</div>
+                <div class='display-5 col-sm-4'>
+                    {% if cliente.arquivo_do_cliente %}
+                    <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
+                    {% endif %}
                     <a href="{% url 'update_cliente' cliente.cpf %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                     <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                 </div>
@@ -21,13 +24,14 @@
                 <dd class="col-sm-9">{{ cliente.nome }}</dd>
               
                 <dt class="col-sm-3 text-truncate">Data de Nascimento</dt>
-                <dd class="col-sm-9">{{ cliente.data_nascimento }}</dd>
+                <dd class="col-sm-9">{{ cliente.data_nascimento|date:"d/m/Y"}}</dd>
               
                 <dt class="col-sm-3">WhatsApp</dt>
                 <dd class="col-sm-9">{{ cliente.telefone_whatsapp }}</dd>
               
                 <dt class="col-sm-3">Telefone</dt>
                 <dd class="col-sm-9">{{ cliente.telefone }}</dd>
+
               </dl>
               <hr />
               <p class="d-inline gap-1">
@@ -59,12 +63,14 @@
                     <td>{{ requerimento.requerente_dependentes }}</td>
                     <td>{{ requerimento.tutor_curador }}</td>
                     <td>{{ requerimento.instituidor }}</td>
-                    <td>{{ requerimento.data }}</td>
+                    <td>{{ requerimento.data|date:"d/m/Y" }}</td>
                     <td>{{ requerimento.estado }}</td>
                     <td>{{ requerimento.observacao }}</td>
                     <td >
+                        {% if requerimento.arquivo_do_requerimento %}
                         <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
-                        <a href="{% url 'update_requerimento' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                        {% endif %}
+                        <a href="{% url 'update_requerimento' requerimento.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                         <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </td>
                 </tr>

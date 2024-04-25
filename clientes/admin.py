@@ -10,8 +10,9 @@ class ClienteAdmin(admin.ModelAdmin):
 admin.site.register(Cliente, ClienteAdmin) # Registra o modelo Cliente no admin do Django da Classe Cliente e da configuração ClienteAdmin
 
 class RequerimentoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'requerente_titular','NB','servico',  'requerente_dependentes', 'tutor_curador', 'instituidor', 'data', 'estado',  'observacao', 'arquivo_do_requerimento')
-    search_fields = ('id', 'NB', 'requerente_titular__nome', 'requererente_titular__cpf')
+    list_display = ( 'requerente_titular','NB','slugfied_NB','servico',  'requerente_dependentes', 'tutor_curador', 'instituidor', 'data', 'estado',  'observacao', 'arquivo_do_requerimento')
+    search_fields = ('NB', 'requerente_titular__nome', 'requererente_titular__cpf')
+    prepopulated_fields = {'slugfied_NB': ('NB',)}
 
 admin.site.register(Requerimento, RequerimentoAdmin) # Registra o modelo Requerimento no admin do Django da Classe Requerimento e da configuração RequerimentoAdmin
 
@@ -28,14 +29,16 @@ class ServicoAdmin(admin.ModelAdmin):
 admin.site.register(Servico, ServicoAdmin) # Registra o modelo Servico no admin do Django da Classe Servico e da configuração ServicoAdmin
 
 class RecursoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
+    list_display = ('id', 'NB', 'protocolo', 'slugfied_protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
     search_fields = ('NB', 'protocolo')
+    prepopulated_fields = {'slugfied_protocolo': ('protocolo',)}
 
 admin.site.register(Recurso, RecursoAdmin) # Registra o modelo Recurso no admin do Django da Classe Recurso e da configuração RecursoAdmin
 
 class ExigenciaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'natureza', 'arquivo_da_exigencia')
+    list_display = ('id', 'NB', 'protocolo', 'slugfied_protocolo', 'data', 'natureza', 'arquivo_da_exigencia')
     search_fields = ('NB', 'protocolo') # 'NB__requerente_titular__nome', 'NB__requerente_titular__cpf
+    prepopulated_fields = {'slugfied_protocolo': ('protocolo',)}
 
 admin.site.register(Exigencia, ExigenciaAdmin) # Registra o modelo Exigencia no admin do Django da Classe Exigencia e da configuração ExigenciaAdmin
 

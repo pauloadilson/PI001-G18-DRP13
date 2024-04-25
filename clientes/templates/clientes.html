@@ -32,11 +32,13 @@
                 <tr>
                     <td><a href="{% url 'cliente' cliente.cpf %}"> {{ cliente.cpf }} </a></td>
                     <td>{{ cliente.nome }}</td>
-                    <td>{{ cliente.data_nascimento }}</td>
+                    <td>{{ cliente.data_nascimento|date:"d/m/Y" }}</td>
                     <td>{{ cliente.telefone_whatsapp }}</td>
                     <td>{{ cliente.telefone }}</td>
                     <td >
+                        {% if cliente.arquivo_do_cliente %}
                         <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
+                        {% endif %}
                         <a href="{% url 'update_cliente' cliente.cpf %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                         <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </td>

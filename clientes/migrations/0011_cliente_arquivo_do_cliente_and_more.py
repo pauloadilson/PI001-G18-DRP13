@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('clientes', '0010_alter_requerimento_nb'),
+        ('clientes', '0009_rename_exigência_exigencia_remove_recurso_natureza'),
     ]
 
     operations = [

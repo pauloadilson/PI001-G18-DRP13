@@ -16,7 +16,7 @@
                     <dd class="col-sm-9">{{ cliente.nome }}</dd>
                 
                     <dt class="col-sm-3 text-truncate">Data de Nascimento</dt>
-                    <dd class="col-sm-9">{{ cliente.data_nascimento }}</dd>
+                    <dd class="col-sm-9">{{ cliente.data_nascimento|date:"d/m/Y" }}</dd>
                 
                     <dt class="col-sm-3">WhatsApp</dt>
                     <dd class="col-sm-9">{{ cliente.telefone_whatsapp }}</dd>
@@ -27,9 +27,12 @@
         </div>
         <div class="p-1 mt-3">
             <div class='row'>
-                <div class='display-5 col-sm-9'>Requerimento</div>
-                <div class='display-5 col-sm-3'>
-                    <a href="{% url 'update_requerimento' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                <div class='display-5 col-sm-8'>Requerimento</div>
+                <div class='display-5 col-sm-4'>
+                    {% if requerimento.arquivo_do_requerimento %}
+                    <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
+                    {% endif %}
+                    <a href="{% url 'update_requerimento' requerimento.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                     <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                 </div>
             </div>
@@ -51,7 +54,7 @@
                     <dd class="col-sm-9">{{ requerimento.instituidor }}</dd>
                 
                     <dt class="col-sm-3">Data</dt>
-                    <dd class="col-sm-9">{{ requerimento.data }}</dd>
+                    <dd class="col-sm-9">{{ requerimento.data|date:"d/m/Y" }}</dd>
                 
                     <dt class="col-sm-3">Estado</dt>
                     <dd class="col-sm-9">{{ requerimento.estado }}</dd>
@@ -80,11 +83,13 @@
                     {% for exigencia in exigencias %}
                     <tr>
                         <td>{{ exigencia.protocolo }}</td>
-                        <td>{{ exigencia.data }}</td>
+                        <td>{{ exigencia.data|date:"d/m/Y" }}</td>
                         <td>{{ exigencia.natureza }}</td>
                         <td >
+                        {% if exigencia.arquivo_da_exigencia %}
                             <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
-                            <a href="{% url 'update_exigencia' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                        {% endif %}
+                            <a href="{% url 'update_exigencia' exigencia.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
@@ -112,12 +117,14 @@
                     {% for recurso in recursos %}
                     <tr>
                         <td>{{ recurso.protocolo }}</td>
-                        <td>{{ recurso.data }}</td>
+                        <td>{{ recurso.data|date:"d/m/Y" }}</td>
                         <td>{{ recurso.estado }}</td>
                         <td>{{ recurso.observacao }}</td>
                         <td >
+                        {% if recurso.arquivo_do_recurso %}
                             <a href="{{ recurso.arquivo_do_recurso.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
-                            <a href="{% url 'update_recurso' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                        {% endif %}
+                            <a href="{% url 'update_recurso' recurso.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
                             <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}

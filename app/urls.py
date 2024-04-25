@@ -30,11 +30,11 @@ urlpatterns = [
     path('cliente/<int:pk>/update', ClienteUpdateView.as_view(), name='update_cliente'),
     path('novo_requerimento/<int:cpf>', RequerimentoCreateView.as_view(), name='novo_requerimento'),
     path('requerimento/<int:NB>', RequerimentoDetailView.as_view(), name='requerimento'),
-    path('requerimento/<int:NB>/update', RequerimentoUpdateView.as_view(), name='update_requerimento'),
-    path('nova_exigencia/<int:pk>', ExigenciaCreateView.as_view(), name='nova_exigencia'),
-    path('exigencia/<int:pk>/update', ExigenciaUpdateView.as_view(), name='update_exigencia'),
-    path('novo_recurso/<int:pk>', RecursoCreateView.as_view(), name='novo_recurso'),
-    path('recurso/<int:pk>/update', RecursoUpdateView.as_view(), name='update_recurso'),
+    path('requerimento/<int:pk>/update', RequerimentoUpdateView.as_view(), name='update_requerimento'),
+    path('nova_exigencia/<int:NB>', ExigenciaCreateView.as_view(), name='nova_exigencia'),
+    path('exigencia_update/<int:pk>', ExigenciaUpdateView.as_view(), name='update_exigencia'),
+    path('novo_recurso/<int:NB>', RecursoCreateView.as_view(), name='novo_recurso'),
+    path('recurso_update/<int:pk>', RecursoUpdateView.as_view(), name='update_recurso'),
 
 ]
 

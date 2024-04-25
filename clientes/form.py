@@ -50,6 +50,7 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('requerente_titular', css_class='form-control', type='hidden'),
             Field('servico', css_class='form-control'),
             Field('NB', css_class='form-control'),
+            Field('slugfied_NB', css_class='form-control'),
             Field('requerente_dependentes', css_class='form-control'),
             Field('tutor_curador', css_class='form-control'),
             Field('instituidor', css_class='form-control'),
@@ -79,7 +80,7 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
             Field('arquivo_da_exigencia', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Submit('submit', 'Salvar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
@@ -101,7 +102,7 @@ class RecursoModelForm(forms.ModelForm):
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_recurso', css_class='form-control'),
-            Submit('submit', 'Cadastrar', css_class='btn btn-primary'),
+            Submit('submit', 'Salvar', css_class='btn btn-primary'),
             Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
         )
 
