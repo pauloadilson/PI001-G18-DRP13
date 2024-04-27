@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from .validators import validate_file_extension
 
 import os
 from datetime import datetime
@@ -35,7 +36,7 @@ class Cliente(models.Model):
     data_nascimento = models.DateField() # Data de nascimento do cliente Ex: 21-01-1990
     telefone_whatsapp = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
     telefone = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
-    arquivo_do_cliente = models.FileField(upload_to=path_and_rename, blank=True, null=True) # Arquivos do cliente
+    arquivo_do_cliente = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do cliente
     
     def __str__(self) -> str:
         return f'{self.cpf}, {self.nome}, {self.data_nascimento}, {self.telefone_whatsapp}, {self.telefone}'  # Retorna o nome do cliente e o CPF do cliente
@@ -66,7 +67,7 @@ class Requerimento(models.Model):
     data = models.DateField() # Data do requerimento
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_requerimento') # Estado do requerimento Ex: Pendente, Concluído
     observacao = models.TextField() # Observações do requerimento
-    arquivo_do_requerimento = models.FileField(upload_to=path_and_rename, blank=True, null=True) # Arquivos do requerimento
+    arquivo_do_requerimento = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do requerimento
 
     def __str__(self) -> str:
         return f'{self.servico.nome}: {self.requerente_titular.nome}, {self.requerente_titular.cpf}, {self.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do requerimento
@@ -86,7 +87,7 @@ class Exigencia(models.Model):
     data = models.DateField() # Data da exigência
     prazo_em_dias = 30 # Prazo para resposta da exigência
     natureza = models.ForeignKey(Natureza, on_delete=models.PROTECT, related_name='natureza_exigencia') # Natureza da exigência Ex: Documentação, Informação
-    arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True) # Arquivos da exigência
+    arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigência
     
     def __str__(self) -> str:
         return f'{self.NB.servico.nome}: {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}, {self.NB.requerente_titular.data_nascimento}'
@@ -100,7 +101,7 @@ class Recurso(models.Model):
     prazo_em_dias = 30 # Prazo para resposta do recurso
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_recurso') # Estado do recurso Ex: Pendente, Concluído
     observacao = models.TextField() # Observações do recurso
-    arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True) # Arquivos do recurso
+    arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
 
     def __str__(self) -> str:
         return f'{self.NB.servico.nome}: {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}, {self.NB.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do recurso
