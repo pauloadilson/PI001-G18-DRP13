@@ -1,6 +1,7 @@
 from clientes.models import Cliente, Requerimento, Exigencia, Recurso
 from clientes.form import ClienteModelForm, RequerimentoModelForm, RecursoModelForm, ExigenciaModelForm
 from django.views.generic import ListView, DetailView, CreateView, TemplateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -65,7 +66,7 @@ class ClienteUpdateView(UpdateView):
     form_title_identificador = None
 
     def get_success_url(self):
-        return f'/cliente/{self.object.cpf}'
+        return reverse_lazy('cliente', kwargs={'pk': self.object.cpf})
     
     def get_context_data(self, **kwargs):
         context = super(ClienteUpdateView, self).get_context_data(**kwargs)
@@ -123,7 +124,7 @@ class RequerimentoCreateView(CreateView):
         return super().form_valid(form)
     
     def get_success_url(self):
-        return f'../cliente/{self.kwargs["cpf"]}'
+        return reverse_lazy('requerimento', kwargs={'NB': self.object.NB})
     
     def get_context_data(self, **kwargs):
         context = super(RequerimentoCreateView, self).get_context_data(**kwargs)
@@ -131,33 +132,6 @@ class RequerimentoCreateView(CreateView):
         context["form_title"] = f'{self.form_title}'
         context["form_title_identificador"] = f'CPF nº {self.kwargs["cpf"]}'
         return context
-    
-class RequerimentoUpdateView(UpdateView):
-    model = Requerimento
-    template_name = 'form.html'
-    form_class = RequerimentoModelForm
-    page_title = 'Editando Requerimento'
-    form_title = 'Editando Requerimento'
-    form_title_identificador = None
-
-    def form_valid(self, form):
-        return super().form_valid(form)
-    
-    def form_invalid(self, form):
-        print(form.errors)
-        return super().form_invalid(form)
-
-    def get_success_url(self):
-        print(self.object.NB)
-        return f'../{self.object.NB}'
-    
-    def get_context_data(self, **kwargs):
-        context = super(RequerimentoUpdateView, self).get_context_data(**kwargs)
-        context["page_title"] = self.page_title
-        context["form_title"] = f'{self.form_title}'
-        context["form_title_identificador"] = f'NB nº {self.object.NB} de {self.object.requerente_titular.nome}'
-        return context
-    
 class RequerimentoDetailView(DetailView):
     model = Requerimento
     slug_field = 'NB'
@@ -181,7 +155,32 @@ class RequerimentoDetailView(DetailView):
         context["exigencias"] = exigencias
         context["recursos"] = recursos
         return context
+    
+class RequerimentoUpdateView(UpdateView):
+    model = Requerimento
+    template_name = 'form.html'
+    form_class = RequerimentoModelForm
+    page_title = 'Editando Requerimento'
+    form_title = 'Editando Requerimento'
+    form_title_identificador = None
 
+    def form_valid(self, form):
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        print(form.errors)
+        return super().form_invalid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('requerimento', kwargs={'NB': self.object.NB})
+    
+    def get_context_data(self, **kwargs):
+        context = super(RequerimentoUpdateView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'NB nº {self.object.NB} de {self.object.requerente_titular.nome}'
+        return context
+    
 class RequerimentoDeleteView(DeleteView):
     model = Requerimento
     template_name = 'delete.html'
@@ -198,10 +197,7 @@ class RequerimentoDeleteView(DeleteView):
         context["tipo_objeto"] = self.tipo_objeto
         context["qtde_instancias_filhas"] = self.count_exigencias_and_recursos()
         return context
-    
-    def count_exigencias_and_recursos(self):
-        total = self.object.NB_exigencia.count() + self.object.NB_recurso.count()
-        return total
+
 
 class IncidenteCreateView(CreateView):
     model = None

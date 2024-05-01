@@ -2,8 +2,8 @@ from django import forms
 
 from clientes.models import Cliente, Requerimento, Recurso, Exigencia
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, Button
-
+from crispy_forms.layout import Layout, Submit, Field, Button, HTML
+from crispy_forms.bootstrap import FormActions
 
 class ClienteModelForm(forms.ModelForm):
     class Meta:
@@ -20,8 +20,10 @@ class ClienteModelForm(forms.ModelForm):
             Field('telefone_whatsapp', css_class='form-control'),
             Field('telefone', css_class='form-control'),
             Field('arquivo_do_cliente', css_class='form-control'),
-            Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
+            FormActions(
+                Submit('submit', 'Salvar', css_class='btn btn-primary'),
+                Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()'),
+            )
         )
 
     def clean_cpf(self):
@@ -58,9 +60,10 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_requerimento', css_class='form-control'),
-            Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
-
+            FormActions(
+                Submit('submit', 'Salvar', css_class='btn btn-primary'),
+                Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()'),
+            )
         )
 
     def save(self, commit=True):
@@ -80,8 +83,10 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
             Field('arquivo_da_exigencia', css_class='form-control'),
-            Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
+            FormActions(
+                Submit('submit', 'Salvar', css_class='btn btn-primary'),
+                Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()'),
+            )
         )
 
     def save(self, commit=True):
@@ -102,8 +107,10 @@ class RecursoModelForm(forms.ModelForm):
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_recurso', css_class='form-control'),
-            Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
+            FormActions(
+                Submit('submit', 'Salvar', css_class='btn btn-primary'),
+                Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()'),
+            )
         )
 
     def save(self, commit=True):
