@@ -21,7 +21,7 @@ class ClienteModelForm(forms.ModelForm):
             Field('telefone', css_class='form-control'),
             Field('arquivo_do_cliente', css_class='form-control'),
             Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
+            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
         )
 
     def clean_cpf(self):
@@ -59,7 +59,7 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_requerimento', css_class='form-control'),
             Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
+            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
 
         )
 
@@ -81,7 +81,7 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('natureza', css_class='form-control'),
             Field('arquivo_da_exigencia', css_class='form-control'),
             Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
+            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
         )
 
     def save(self, commit=True):
@@ -103,7 +103,7 @@ class RecursoModelForm(forms.ModelForm):
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_recurso', css_class='form-control'),
             Submit('submit', 'Salvar', css_class='btn btn-primary'),
-            Button('button', 'Voltar', css_class='btn btn-light', onclick='window.history.back()')
+            Button('button', 'Voltar', css_class='btn btn-secondary', onclick='window.history.back()')
         )
 
     def save(self, commit=True):

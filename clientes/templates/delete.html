@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+        
+{% block content %}
+    
+<main class="content" >
+    <div class="container-fluid ">
+        <div class="p-1 mt-3">
+            <div class='display-5'>{{ form_title }}</div>
+            <hr />
+        </div>
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <strong>Atenção!</strong> Corrija o(s) erro(s) abaixo.
+            </div>
+        {% endif %}
+        <div class="mt-2" id="delete">
+            <p>Tem certeza que deseja excluir {{ tipo_objeto }} <strong>{{ form_title_identificador }}</strong>?</p>
+            <form method="post" enctype='multipart/form-data'>
+                {%  csrf_token %}
+                <div class="buttons-container">
+                    <button type="submit" class="btn btn-danger">Excluir {{ tipo_objeto }}</button>
+                    <a class="btn btn-secondary" onclick="window.history.back()">Cancelar</a>
+                </div>
+            </form>  
+
+        </div>
+
+    </div>
+</main>
+{% endblock content %}

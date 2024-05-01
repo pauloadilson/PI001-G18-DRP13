@@ -11,6 +11,15 @@ class IndexView(TemplateView):
         context = super(IndexView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
         return context
+    
+class LoginView(TemplateView):
+    template_name = 'login.html'
+    page_title = 'Login'
+
+    def get_context_data(self, **kwargs) -> dict[str, any]:
+        context = super(LoginView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        return context
 
 class ClientesListView(ListView):
     model = Cliente
@@ -78,6 +87,22 @@ class ClienteDetailView(DetailView):
         requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
         context["page_title"] = page_title
         context["requerimentos_cliente"] = requerimentos_cliente
+        return context
+    
+class ClienteDeleteView(DeleteView):
+    model = Cliente
+    template_name = 'delete.html'
+    success_url = '/clientes/'
+    page_title = 'Excluindo Cliente'
+    form_title = 'Excluindo Cliente'
+    tipo_objeto = 'o cliente'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ClienteDeleteView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'de CPF nº {self.object.cpf}'
+        context["tipo_objeto"] = self.tipo_objeto
         return context
     
 class RequerimentoCreateView(CreateView):
@@ -156,7 +181,28 @@ class RequerimentoDetailView(DetailView):
         context["exigencias"] = exigencias
         context["recursos"] = recursos
         return context
+
+class RequerimentoDeleteView(DeleteView):
+    model = Requerimento
+    template_name = 'delete.html'
+    success_url = '/clientes/'
+    page_title = 'Excluindo Requerimento'
+    form_title = 'Excluindo Requerimento'
+    tipo_objeto = 'o requerimento'
     
+    def get_context_data(self, **kwargs):
+        context = super(RequerimentoDeleteView, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        context["form_title"] = f'{self.form_title}'
+        context["form_title_identificador"] = f'de NB nº {self.object.NB}'
+        context["tipo_objeto"] = self.tipo_objeto
+        context["qtde_instancias_filhas"] = self.count_exigencias_and_recursos()
+        return context
+    
+    def count_exigencias_and_recursos(self):
+        total = self.object.NB_exigencia.count() + self.object.NB_recurso.count()
+        return total
+
 class IncidenteCreateView(CreateView):
     model = None
     template_name = 'form.html'
@@ -190,24 +236,30 @@ class ExigenciaCreateView(IncidenteCreateView):
     page_title = 'Nova Exigência'
     form_title = 'Nova Exigência'
 
-class ExigenciaUpdateView(UpdateView):
-    model = Exigencia
+class IncidenteUpdateView(UpdateView):
+    model = None
     template_name = 'form.html'
-    form_class = ExigenciaModelForm
-    slug_url_kwarg = 'slugfied_protocolo'
-    page_title = 'Editando Exigência'
-    form_title = 'Editando Exigência'
+    form_class = None
+    page_title = 'Editando'
+    form_title = 'Editando'
     form_title_identificador = None
 
     def get_success_url(self):
         return f'../requerimento/{self.object.NB.NB}'
     
     def get_context_data(self, **kwargs):
-        context = super(ExigenciaUpdateView, self).get_context_data(**kwargs)
+        context = super(IncidenteUpdateView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
         context["form_title"] = f'{self.form_title}'
         context["form_title_identificador"] = f'NB nº {self.object.NB.NB} de {self.object.NB.requerente_titular.nome}'
         return context
+
+class ExigenciaUpdateView(IncidenteUpdateView):
+    model = Exigencia
+    form_class = ExigenciaModelForm
+    slug_url_kwarg = 'slugfied_protocolo'
+    page_title = 'Editando Exigência'
+    form_title = 'Editando Exigência'
 
 class RecursoCreateView(IncidenteCreateView):
     model = Recurso
@@ -215,20 +267,35 @@ class RecursoCreateView(IncidenteCreateView):
     page_title = 'Novo Recurso'
     form_title = 'Novo Recurso'
 
-class RecursoUpdateView(UpdateView):
+class RecursoUpdateView(IncidenteUpdateView):
     model = Recurso
-    template_name = 'form.html'
     form_class = RecursoModelForm
     page_title = 'Editando Recurso'
     form_title = 'Editando Recurso'
-    form_title_identificador = None
 
-    def get_success_url(self):
-        return f'../requerimento/{self.object.NB.NB}'
+class IncidenteDeleteView(DeleteView):
+    model = None
+    template_name = 'delete.html'
+    page_title = 'Excluindo'
+    form_title = 'Excluindo'
+    tipo_objeto = None
     
     def get_context_data(self, **kwargs):
-        context = super(RecursoUpdateView, self).get_context_data(**kwargs)
+        context = super(IncidenteDeleteView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
         context["form_title"] = f'{self.form_title}'
-        context["form_title_identificador"] = f'NB nº {self.object.NB.NB} de {self.object.NB.requerente_titular.nome}'
+        context["form_title_identificador"] = f'de NB nº {self.object.NB.NB}'
+        context["tipo_objeto"] = self.tipo_objeto
         return context
+    
+class ExigenciaDeleteView(IncidenteDeleteView):
+    model = Exigencia
+    page_title = 'Excluindo Exigência'
+    form_title = 'Excluindo Exigência'
+    tipo_objeto = 'a exigência'
+
+class RecursoDeleteView(IncidenteDeleteView):
+    model = Recurso
+    page_title = 'Excluindo Recurso'
+    form_title = 'Excluindo Recurso'
+    tipo_objeto = 'o recurso'

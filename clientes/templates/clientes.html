@@ -40,7 +40,7 @@
                         <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
                         <a href="{% url 'update_cliente' cliente.cpf %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                        <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                        <a href="{% url 'delete_cliente' pk=cliente.cpf %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </td>
                     
                 </tr>

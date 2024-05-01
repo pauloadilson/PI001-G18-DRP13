@@ -6,7 +6,15 @@
 <main class="content" >
     <div class="container-fluid ">
         <div class="p-1 mt-3">
-            <div class='display-5'>Cliente</div>
+            <div class='row'>
+                <div class='display-5 col-sm-8'>Cliente</div>
+                <div class='display-5 col-sm-4'>
+                    {% if cliente.arquivo_do_cliente %}
+                    <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
+                    {% endif %}
+                    <a href="{% url 'update_cliente' cliente.cpf %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                </div>
+            </div>
             <hr />
                 <dl class="row">
                     <dt class="col-sm-3">CPF</dt>
@@ -33,7 +41,9 @@
                     <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                     {% endif %}
                     <a href="{% url 'update_requerimento' requerimento.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                    <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    {% if requerimento.qtde_instancias_filhas == 0 %}
+                    <a href="{% url 'delete_requerimento' pk=requerimento.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    {% endif %}
                 </div>
             </div>
             <hr />
@@ -90,7 +100,7 @@
                             <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
                             <a href="{% url 'update_exigencia' exigencia.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                            <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                            <a href="{% url 'delete_exigencia' exigencia.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -125,7 +135,7 @@
                             <a href="{{ recurso.arquivo_do_recurso.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
                             <a href="{% url 'update_recurso' recurso.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                            <a href="" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                            <a href="{% url 'delete_recurso' recurso.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
                 </tbody>
