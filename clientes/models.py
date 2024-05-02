@@ -60,7 +60,6 @@ class Requerimento(models.Model):
     requerente_titular = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_titular_requerimento') # Relacionamento com o modelo Cliente
     servico = models.ForeignKey(Servico, on_delete=models.PROTECT, related_name='servico_requerimento') # Serviço solicitado Ex: Aposentadoria por idade
     NB = models.CharField(max_length=20, unique=True) # Número do benefício do cliente
-    slugfied_NB = models.SlugField(max_length=25, unique=True) # Número do protocolo do recurso
     requerente_dependentes = models.TextField(blank=True, null=True) #.ManyToManyField(Cliente, related_name='cliente_dependente_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
     tutor_curador = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_tutor_curador_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
     instituidor = models.ForeignKey(Cliente, on_delete=models.PROTECT, related_name='cliente_instituidor_requerimento', blank=True, null=True) # Relacionamento com o modelo Cliente
@@ -83,10 +82,10 @@ class Exigencia(models.Model):
     id = models.AutoField(primary_key=True) # ID da exigência
     NB = models.ForeignKey(Requerimento, on_delete=models.PROTECT, related_name='NB_exigencia') # Relacionamento com o modelo Requerimento
     protocolo = models.CharField(max_length=20) # Número do protocolo da exigência
-    slugfied_protocolo = models.SlugField(max_length=25, unique=True) # Número do protocolo do recurso
     data = models.DateField() # Data da exigência
     prazo_em_dias = 30 # Prazo para resposta da exigência
     natureza = models.ForeignKey(Natureza, on_delete=models.PROTECT, related_name='natureza_exigencia') # Natureza da exigência Ex: Documentação, Informação
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_exigencia') # Estado do recurso Ex: Pendente, Concluído
     arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigência
     
     def __str__(self) -> str:
@@ -96,7 +95,6 @@ class Recurso(models.Model):
     id = models.AutoField(primary_key=True) # ID do recurso
     NB = models.ForeignKey(Requerimento, on_delete=models.PROTECT, related_name='NB_recurso') # Relacionamento com o modelo Requerimento
     protocolo = models.CharField(max_length=20) # Número do protocolo do recurso
-    slugfied_protocolo = models.SlugField(max_length=25, unique=True) # Número do protocolo do recurso
     data = models.DateField() # Data do recurso
     prazo_em_dias = 30 # Prazo para resposta do recurso
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_recurso') # Estado do recurso Ex: Pendente, Concluído
