@@ -86,6 +86,7 @@
                         <th>Protocolo</th>
                         <th>Data</th>
                         <th>Natureza</th>
+                        <th>Estado</th>
                         <th class='col-sm-2'>Ações</th>
                     </tr>
                 </thead>
@@ -95,6 +96,7 @@
                         <td>{{ exigencia.protocolo }}</td>
                         <td>{{ exigencia.data|date:"d/m/Y" }}</td>
                         <td>{{ exigencia.natureza }}</td>
+                        <td>{{ exigencia.estado }}</td>
                         <td >
                         {% if exigencia.arquivo_da_exigencia %}
                             <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
