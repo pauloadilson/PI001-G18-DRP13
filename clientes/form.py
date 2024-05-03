@@ -72,7 +72,7 @@ class RequerimentoModelForm(forms.ModelForm):
 class ExigenciaModelForm(forms.ModelForm):
     class Meta:
         model = Exigencia
-        fields = ('NB', 'protocolo', 'data', 'natureza', 'arquivo_da_exigencia')
+        fields = ('NB', 'protocolo', 'data', 'natureza', 'estado', 'arquivo_da_exigencia')
 
     def __init__(self, *args, **kwargs):
         super(ExigenciaModelForm, self).__init__(*args, **kwargs)
