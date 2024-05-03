@@ -82,6 +82,7 @@ class ExigenciaModelForm(forms.ModelForm):
             Field('protocolo', css_class='form-control'),
             Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
+            Field('estado', css_class='form-control'),
             Field('arquivo_da_exigencia', css_class='form-control'),
             FormActions(
                 Submit('submit', 'Salvar', css_class='btn btn-primary'),

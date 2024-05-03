@@ -8,11 +8,7 @@
             <div class='display-5'>{{ form_title }}</div>
             <hr />
         </div>
-        {% if form.errors %}
-            <div class="alert alert-danger" role="alert">
-                <strong>Atenção!</strong> Corrija o(s) erro(s) abaixo.
-            </div>
-        {% endif %}
+        {% if qtde_instancias_filhas == 0 %}
         <div class="mt-2" id="delete">
             <p>Tem certeza que deseja excluir {{ tipo_objeto }} <strong>{{ form_title_identificador }}</strong>?</p>
             <form method="post" enctype='multipart/form-data'>
@@ -24,7 +20,26 @@
             </form>  
 
         </div>
-
+        {% else %}
+        <div class="mt-2" id="delete">
+            <h1> Não é possível excluir {{ tipo_objeto }} </h1> 
+            <p> Excluir {{ tipo_objeto }} selecionado exigiria excluir os seguintes objetos relacionados protegidos:</p>
+            <ul>
+                {% for result in result_list %}
+                <li>
+                    {% if result.get_class_name == 'Requerimento' %}
+                    Excluir <a href="{% url 'delete_requerimento' result.NB %}">  {{ result }} </a>
+                    {% elif result.get_class_name == 'Exigencia' %}
+                    Excluir <a href="{% url 'delete_exigencia' result.protocolo %}">  {{ result }} </a>
+                    {% elif result.get_class_name == 'Recurso' %}
+                    Excluir <a href="{% url 'delete_recurso' result.protocolo %}">  {{ result }} </a>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <a class="btn btn-secondary" onclick="window.history.back()">Voltar</a>
+        </div>
+        {% endif %}
     </div>
 </main>
 {% endblock content %}

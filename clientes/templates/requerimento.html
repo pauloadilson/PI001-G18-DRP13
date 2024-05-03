@@ -40,9 +40,9 @@
                     {% if requerimento.arquivo_do_requerimento %}
                     <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                     {% endif %}
-                    <a href="{% url 'update_requerimento' requerimento.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                    {% if requerimento.qtde_instancias_filhas == 0 %}
-                    <a href="{% url 'delete_requerimento' pk=requerimento.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    <a href="{% url 'update_requerimento' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                    {% if qtde_instancias_filhas == 0 %}
+                    <a href="{% url 'delete_requerimento' requerimento.NB %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     {% endif %}
                 </div>
             </div>
@@ -90,7 +90,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for exigencia in exigencias %}
+                    {% for exigencia in exigencias_requerimento %}
                     <tr>
                         <td>{{ exigencia.protocolo }}</td>
                         <td>{{ exigencia.data|date:"d/m/Y" }}</td>
@@ -99,8 +99,8 @@
                         {% if exigencia.arquivo_da_exigencia %}
                             <a href="{{ exigencia.arquivo_da_exigencia.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
-                            <a href="{% url 'update_exigencia' exigencia.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                            <a href="{% url 'delete_exigencia' exigencia.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                            <a href="{% url 'update_exigencia' requerimento.NB exigencia.protocolo %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="{% url 'delete_exigencia' requerimento.NB exigencia.protocolo %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -124,7 +124,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for recurso in recursos %}
+                    {% for recurso in recursos_requerimento %}
                     <tr>
                         <td>{{ recurso.protocolo }}</td>
                         <td>{{ recurso.data|date:"d/m/Y" }}</td>
@@ -134,8 +134,8 @@
                         {% if recurso.arquivo_do_recurso %}
                             <a href="{{ recurso.arquivo_do_recurso.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
-                            <a href="{% url 'update_recurso' recurso.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                            <a href="{% url 'delete_recurso' recurso.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                            <a href="{% url 'update_recurso' requerimento.NB recurso.protocolo %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                            <a href="{% url 'delete_recurso' requerimento.NB recurso.protocolo %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </tr>
                     {% endfor %}
                 </tbody>

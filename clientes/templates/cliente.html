@@ -12,7 +12,9 @@
                     <a href="{{ cliente.arquivo_do_cliente.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                     {% endif %}
                     <a href="{% url 'update_cliente' cliente.cpf %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                    <a href="{% url 'delete_cliente' pk=cliente.cpf %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    {% if qtde_instancias_filhas == 0 %}
+                    <a href="{% url 'delete_cliente' cliente.cpf %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                    {% endif %}
                 </div>
             </div>
             <hr />
@@ -70,8 +72,8 @@
                         {% if requerimento.arquivo_do_requerimento %}
                         <a href="{{ requerimento.arquivo_do_requerimento.url }}" class="btn btn-primary" download>{% bs_icon 'file-pdf' size='1em' %}</a>
                         {% endif %}
-                        <a href="{% url 'update_requerimento' requerimento.id %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
-                        <a href="{% url 'delete_requerimento' pk=requerimento.id %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
+                        <a href="{% url 'update_requerimento' requerimento.NB %}" class="btn btn-warning">{% bs_icon 'pencil-square' %}</a>
+                        <a href="{% url 'delete_requerimento' requerimento.NB %}" class="btn btn-danger">{% bs_icon 'file-x' %}</a>
                     </td>
                 </tr>
                 {% endfor %}
