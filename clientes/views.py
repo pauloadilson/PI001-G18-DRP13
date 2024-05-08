@@ -375,8 +375,6 @@ class ExigenciaDeleteView(IncidenteDeleteView):
     form_title = "Excluindo Exigência"
     tipo_objeto = "a exigência"
 
-    slug_field = "protocolo"
-    slug_url_kwarg = "protocolo"
 
 class RecursoDeleteView(IncidenteDeleteView):
     model = Recurso
@@ -384,8 +382,6 @@ class RecursoDeleteView(IncidenteDeleteView):
     form_title = "Excluindo Recurso"
     tipo_objeto = "o recurso"
 
-    slug_field = "protocolo"
-    slug_url_kwarg = "protocolo"
 
 class PrazoView(TemplateView):
     template_name = "prazo.html"
@@ -395,13 +391,13 @@ class PrazoView(TemplateView):
         context = super(PrazoView, self).get_context_data(**kwargs)
         ultimos_30_dias = datetime.now() - timedelta(days=30)
         exigencias_nao_crumpridas = Exigencia.objects.all().select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
-        exigencias_futuras = exigencias_nao_crumpridas.filter(data__gt=datetime.now())
-        exigencias_vencidas = exigencias_nao_crumpridas.filter(data__range=(ultimos_30_dias, datetime.now()))
+        exigencias_futuras = exigencias_nao_crumpridas.filter(data_final_prazo__gt=datetime.now())
+        exigencias_vencidas = exigencias_nao_crumpridas.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
         existem_exigencias_futuras = exigencias_futuras.exists()
         existem_exigencias_vencidas = exigencias_vencidas.exists()
         recursos_nao_cumpridos = Recurso.objects.all().select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
-        recursos_futuros = recursos_nao_cumpridos.filter(data__gt=datetime.now())
-        recursos_vencidos = recursos_nao_cumpridos.filter(data__range=(ultimos_30_dias, datetime.now()))
+        recursos_futuros = recursos_nao_cumpridos.filter(data_final_prazo__gt=datetime.now())
+        recursos_vencidos = recursos_nao_cumpridos.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
         existem_recursos_futuros = recursos_futuros.exists()
         existem_recursos_vencidos = recursos_vencidos.exists()
 

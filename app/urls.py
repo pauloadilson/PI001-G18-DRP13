@@ -75,18 +75,18 @@ urlpatterns = [
         name="nova_exigencia",
     ),
     path(
-        "exigencia/<int:NB>/<int:protocolo>/update",
+        "exigencia/<int:NB>/<int:pk>/update",
         ExigenciaUpdateView.as_view(),
         name="update_exigencia",
     ),
     path(
-        "exigencia/<int:NB>/<int:protocolo>/delete",
+        "exigencia/<int:NB>/<int:pk>/delete",
         ExigenciaDeleteView.as_view(),
         name="delete_exigencia",
     ),
     path("recurso/<int:NB>/incluir", RecursoCreateView.as_view(), name="novo_recurso"),
-    path("recurso/<int:NB>/<int:protocolo>/update", RecursoUpdateView.as_view(), name="update_recurso"),
-    path("recurso/<int:NB>/<int:protocolo>/delete", RecursoDeleteView.as_view(), name="delete_recurso"),
+    path("recurso/<int:NB>/<int:pk>/update", RecursoUpdateView.as_view(), name="update_recurso"),
+    path("recurso/<int:NB>/<int:pk>/delete", RecursoDeleteView.as_view(), name="delete_recurso"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -86,15 +86,13 @@ class Natureza(models.Model):
 class Exigencia(models.Model):
     id = models.AutoField(primary_key=True) # ID da exigÃªncia
     NB = models.ForeignKey(Requerimento, on_delete=models.PROTECT, related_name='NB_exigencia') # Relacionamento com o modelo Requerimento
-    protocolo = models.CharField(max_length=20) # NÃºmero do protocolo da exigÃªncia
-    data = models.DateField() # Data da exigÃªncia
-    prazo_em_dias = 30 # Prazo para resposta da exigÃªncia
+    data_final_prazo = models.DateField() # Data da exigÃªncia
     natureza = models.ForeignKey(Natureza, on_delete=models.PROTECT, related_name='natureza_exigencia') # Natureza da exigÃªncia Ex: DocumentaÃ§Ã£o, InformaÃ§Ã£o
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_exigencia') # Estado do recurso Ex: Pendente, ConcluÃ­do
     arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigÃªncia
     
     def __str__(self) -> str:
-        return f'Exigência: protocolo nº {self.protocolo} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
+        return f'Exigência: id nº {self.id} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__
@@ -102,15 +100,13 @@ class Exigencia(models.Model):
 class Recurso(models.Model):
     id = models.AutoField(primary_key=True) # ID do recurso
     NB = models.ForeignKey(Requerimento, on_delete=models.PROTECT, related_name='NB_recurso') # Relacionamento com o modelo Requerimento
-    protocolo = models.CharField(max_length=20) # NÃºmero do protocolo do recurso
-    data = models.DateField() # Data do recurso
-    prazo_em_dias = 30 # Prazo para resposta do recurso
+    data_final_prazo = models.DateField() # Data do recurso
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_recurso') # Estado do recurso Ex: Pendente, ConcluÃ­do
     observacao = models.TextField() # ObservaÃ§Ãµes do recurso
     arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
 
     def __str__(self) -> str:
-        return f'Recurso: protocolo nº {self.protocolo} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
+        return f'Recurso: id nº {self.id} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__

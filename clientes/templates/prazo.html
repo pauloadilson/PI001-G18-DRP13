@@ -16,12 +16,11 @@
                 <table class="table">
                     <thead>
                         <tr>                        
+                            <th>Prazo Final da Exigencia</th>
                             <th>CPF Requerente</th>
                             <th>Nome Requerente</th>
                             <th>NB</th>
                             <th>Serviço</th>
-                            <th>Exigencia Protocolo</th>
-                            <th>Exigencia Data</th>
                             <th>Exigencia Natureza</th>
                             <th>Exigencia Estado</th>
                         </tr>
@@ -29,12 +28,11 @@
                     <tbody>
                         {% for exigencia in exigencias_futuras %}
                         <tr>
+                            <td>{{ exigencia.data_final_prazo|date:"d/m/Y" }}</td>
                             <td><a href="{% url 'cliente' exigencia.NB.requerente_titular.cpf  %}">{{ exigencia.NB.requerente_titular.cpf }}</a> </td>
                             <td>{{ exigencia.NB.requerente_titular.nome }}</td>
                             <td><a href="{% url 'requerimento' exigencia.NB.NB %}">{{ exigencia.NB.NB }}</a></td>
                             <td>{{ exigencia.NB.servico }}</td>
-                            <td><a href="{% url 'update_exigencia' exigencia.NB.NB exigencia.protocolo %}">{{ exigencia.protocolo }} </a></td>
-                            <td>{{ exigencia.data|date:"d/m/Y" }}</td>
                             <td>{{ exigencia.natureza }}</td>
                             <td>{{ exigencia.estado }}</td>
                         </tr>
@@ -53,12 +51,11 @@
                 <table class="table">
                     <thead>
                         <tr>                        
+                            <th>Prazo Final da Exigencia</th>
                             <th>CPF Requerente</th>
                             <th>Nome Requerente</th>
                             <th>NB</th>
                             <th>Serviço</th>
-                            <th>Exigencia Protocolo</th>
-                            <th>Exigencia Data</th>
                             <th>Exigencia Natureza</th>
                             <th>Exigencia Estado</th>
                         </tr>
@@ -66,12 +63,11 @@
                     <tbody>
                         {% for exigencia in exigencias_vencidas %}
                         <tr>
+                            <td>{{ exigencia.data_final_prazo|date:"d/m/Y" }}</td>
                             <td><a href="{% url 'cliente' exigencia.NB.requerente_titular.cpf  %}">{{ exigencia.NB.requerente_titular.cpf }}</a> </td>
                             <td>{{ exigencia.NB.requerente_titular.nome }}</td>
                             <td><a href="{% url 'requerimento' exigencia.NB.NB %}">{{ exigencia.NB.NB }}</a></td>
                             <td>{{ exigencia.NB.servico }}</td>
-                            <td><a href="{% url 'update_exigencia' exigencia.NB.NB exigencia.protocolo %}">{{ exigencia.protocolo }} </a></td>
-                            <td>{{ exigencia.data|date:"d/m/Y" }}</td>
                             <td>{{ exigencia.natureza }}</td>
                             <td>{{ exigencia.estado }}</td>
                         </tr>
@@ -93,24 +89,22 @@
                 <table class="table">
                     <thead>
                         <tr>                        
+                            <th>Prazo Final do Recurso</th>
                             <th>CPF Requerente</th>
                             <th>Nome Requerente</th>
                             <th>NB</th>
                             <th>Serviço</th>
-                            <th>Recurso Protocolo</th>
-                            <th>Recurso Data</th>
                             <th>Recurso Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for recurso in recursos_futuros %}
                         <tr>
+                            <td>{{ recurso.data_final_prazo|date:"d/m/Y" }}</td>
                             <td><a href="{% url 'cliente' recurso.NB.requerente_titular.cpf  %}">{{ recurso.NB.requerente_titular.cpf }}</a> </td>
                             <td>{{ recurso.NB.requerente_titular.nome }}</td>
                             <td><a href="{% url 'requerimento' recurso.NB.NB %}">{{ recurso.NB.NB }}</a></td>
                             <td>{{ recurso.NB.servico }}</td>
-                            <td><a href="{% url 'update_recurso' recurso.NB.NB recurso.protocolo %}">{{ recurso.protocolo }} </a></td>
-                            <td>{{ recurso.data|date:"d/m/Y" }}</td>
                             <td>{{ recurso.estado }}</td>
                         </tr>
                         {% endfor %}
@@ -129,24 +123,22 @@
                 <table class="table">
                     <thead>
                         <tr>                        
+                            <th>Prazo Final do Recurso</th>
                             <th>CPF Requerente</th>
                             <th>Nome Requerente</th>
                             <th>NB</th>
                             <th>Serviço</th>
-                            <th>Recurso Protocolo</th>
-                            <th>Recurso Data</th>
                             <th>Recurso Estado</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for recurso in recursos_vencidos %}
                         <tr>
+                            <td>{{ recurso.data_final_prazo|date:"d/m/Y" }}</td>
                             <td><a href="{% url 'cliente' recurso.NB.requerente_titular.cpf  %}">{{ recurso.NB.requerente_titular.cpf }}</a> </td>
                             <td>{{ recurso.NB.requerente_titular.nome }}</td>
                             <td><a href="{% url 'requerimento' recurso.NB.NB %}">{{ recurso.NB.NB }}</a></td>
                             <td>{{ recurso.NB.servico }}</td>
-                            <td><a href="{% url 'update_recurso' recurso.NB.NB recurso.protocolo %}">{{ recurso.protocolo }} </a></td>
-                            <td>{{ recurso.data|date:"d/m/Y" }}</td>
                             <td>{{ recurso.estado }}</td>
                         </tr>
                         {% endfor %}

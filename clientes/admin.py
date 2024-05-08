@@ -28,14 +28,14 @@ class ServicoAdmin(admin.ModelAdmin):
 admin.site.register(Servico, ServicoAdmin) # Registra o modelo Servico no admin do Django da Classe Servico e da configuração ServicoAdmin
 
 class ExigenciaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'natureza', 'estado', 'arquivo_da_exigencia')
-    search_fields = ('NB', 'protocolo') # 'NB__requerente_titular__nome', 'NB__requerente_titular__cpf
+    list_display = ('id', 'NB', 'data_final_prazo', 'natureza', 'estado', 'arquivo_da_exigencia')
+    search_fields = ('NB',) # 'NB__requerente_titular__nome', 'NB__requerente_titular__cpf
 
 admin.site.register(Exigencia, ExigenciaAdmin) # Registra o modelo Exigencia no admin do Django da Classe Exigencia e da configuração ExigenciaAdmin
 
 class RecursoAdmin(admin.ModelAdmin):
-    list_display = ('id', 'NB', 'protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
-    search_fields = ('NB', 'protocolo')
+    list_display = ('id', 'NB', 'data_final_prazo', 'estado', 'observacao', 'arquivo_do_recurso')
+    search_fields = ('NB',)
 
 admin.site.register(Recurso, RecursoAdmin) # Registra o modelo Recurso no admin do Django da Classe Recurso e da configuração RecursoAdmin
 

@@ -72,15 +72,14 @@ class RequerimentoModelForm(forms.ModelForm):
 class ExigenciaModelForm(forms.ModelForm):
     class Meta:
         model = Exigencia
-        fields = ('NB', 'protocolo', 'data', 'natureza', 'estado', 'arquivo_da_exigencia')
+        fields = ('NB', 'data_final_prazo', 'natureza', 'estado', 'arquivo_da_exigencia')
 
     def __init__(self, *args, **kwargs):
         super(ExigenciaModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('NB', css_class='form-control', type='hidden'),
-            Field('protocolo', css_class='form-control'),
-            Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
+            Field('data_final_prazo', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('natureza', css_class='form-control'),
             Field('estado', css_class='form-control'),
             Field('arquivo_da_exigencia', css_class='form-control'),
@@ -96,15 +95,14 @@ class ExigenciaModelForm(forms.ModelForm):
 class RecursoModelForm(forms.ModelForm):
     class Meta:
         model = Recurso
-        fields = ('NB', 'protocolo', 'data', 'estado', 'observacao', 'arquivo_do_recurso')
+        fields = ('NB', 'data_final_prazo', 'estado', 'observacao', 'arquivo_do_recurso')
 
     def __init__(self, *args, **kwargs):
         super(RecursoModelForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Field('NB', css_class='form-control', type='hidden'),
-            Field('protocolo', css_class='form-control'),
-            Field('data', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
+            Field('data_final_prazo', css_class='form-control date_picker', placeholder='dd/mm/aaaa'),
             Field('estado', css_class='form-control'),
             Field('observacao', css_class='form-control'),
             Field('arquivo_do_recurso', css_class='form-control'),
