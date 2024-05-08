@@ -94,7 +94,7 @@ class Exigencia(models.Model):
     arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigÃªncia
     
     def __str__(self) -> str:
-        return f'Exigência: id {self.id} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
+        return f'Exigência: protocolo nº {self.protocolo} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__
@@ -110,7 +110,7 @@ class Recurso(models.Model):
     arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
 
     def __str__(self) -> str:
-        return f'Recurso: {self.protocolo} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
+        return f'Recurso: protocolo nº {self.protocolo} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__

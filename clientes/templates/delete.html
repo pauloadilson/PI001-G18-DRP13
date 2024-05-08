@@ -30,9 +30,9 @@
                     {% if result.get_class_name == 'Requerimento' %}
                     Excluir <a href="{% url 'delete_requerimento' result.NB %}">  {{ result }} </a>
                     {% elif result.get_class_name == 'Exigencia' %}
-                    Excluir <a href="{% url 'delete_exigencia' result.protocolo %}">  {{ result }} </a>
+                    Excluir <a href="{% url 'delete_exigencia' result.NB.NB result.protocolo %}">  {{ result }} </a>
                     {% elif result.get_class_name == 'Recurso' %}
-                    Excluir <a href="{% url 'delete_recurso' result.protocolo %}">  {{ result }} </a>
+                    Excluir <a href="{% url 'delete_recurso' result.NB.NB result.protocolo %}">  {{ result }} </a>
                     {% endif %}
                 </li>
                 {% endfor %}
