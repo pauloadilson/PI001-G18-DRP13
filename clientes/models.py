@@ -38,11 +38,18 @@ class Cliente(models.Model):
     telefone = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
     arquivo_do_cliente = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do cliente
     
+    is_deleted = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return f'{self.cpf}, {self.nome}, {self.data_nascimento}, {self.telefone_whatsapp}, {self.telefone}'  # Retorna o nome do cliente e o CPF do cliente
     
     def get_class_name(self):
         return self.__class__.__name__
+    
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
+
 class Servico(models.Model):
     id = models.AutoField(primary_key=True) # ID do serviÃ§o
     nome = models.CharField(max_length=100) # Nome do serviÃ§o Ex: Aposentadoria por idade, Aposentadoria por invalidez
@@ -70,12 +77,19 @@ class Requerimento(models.Model):
     observacao = models.TextField() # ObservaÃ§Ãµes do requerimento
     arquivo_do_requerimento = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do requerimento
 
+    is_deleted = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return f'Requerimento de NB nº {self.NB} para {self.servico.nome}: {self.requerente_titular.nome}, {self.requerente_titular.cpf}, {self.requerente_titular.data_nascimento}' # Retorna o nome do cliente e a data do requerimento
 
     def get_class_name(self):
         return self.__class__.__name__
+    
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
 
+        
 class Natureza(models.Model):
     id = models.AutoField(primary_key=True) # ID da natureza
     nome = models.CharField(max_length=100) # Nome da natureza Ex: DocumentaÃ§Ã£o, InformaÃ§Ã£o
@@ -91,11 +105,18 @@ class Exigencia(models.Model):
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_exigencia') # Estado do recurso Ex: Pendente, ConcluÃ­do
     arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigÃªncia
     
+    is_deleted = models.BooleanField(default=False)
+
+
     def __str__(self) -> str:
         return f'Exigência: id nº {self.id} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__
+    
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()
 
 class Recurso(models.Model):
     id = models.AutoField(primary_key=True) # ID do recurso
@@ -105,8 +126,14 @@ class Recurso(models.Model):
     observacao = models.TextField() # ObservaÃ§Ãµes do recurso
     arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
 
+    is_deleted = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return f'Recurso: id nº {self.id} do NB nº {self.NB.NB} de {self.NB.requerente_titular.nome}, {self.NB.requerente_titular.cpf}'
     
     def get_class_name(self):
         return self.__class__.__name__
+    
+    def delete(self, *args, **kwargs):
+        self.is_deleted = True
+        self.save()

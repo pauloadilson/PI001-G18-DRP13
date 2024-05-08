@@ -109,8 +109,7 @@ class ClienteDetailView(DetailView):
         context = super(ClienteDetailView, self).get_context_data(**kwargs)
         cliente_id = self.object.cpf
         page_title = f"Cliente {cliente_id}"
-        requerimentos = Requerimento.objects.all()
-        requerimentos_cliente = requerimentos.filter(
+        requerimentos_cliente = Requerimento.objects.filter(is_deleted=False).filter(
             requerente_titular__cpf__icontains=cliente_id
         )
         qtde_instancias_filhas = requerimentos_cliente.count()
@@ -133,8 +132,7 @@ class ClienteDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super(ClienteDeleteView, self).get_context_data(**kwargs)
         cliente_id = self.object.cpf
-        requerimentos = Requerimento.objects.all()
-        requerimentos_cliente = requerimentos.filter(requerente_titular__cpf__icontains=cliente_id)
+        requerimentos_cliente = Requerimento.objects.filter(is_deleted=False).filter(requerente_titular__cpf__icontains=cliente_id)
         qtde_instancias_filhas = requerimentos_cliente.count()
 
         context["page_title"] = self.page_title
@@ -156,11 +154,11 @@ class RequerimentoCreateView(CreateView):
 
     def get_initial(self):
         initial = super().get_initial()
-        initial["requerente_titular"] = Cliente.objects.get(cpf=self.kwargs["cpf"])
+        initial["requerente_titular"] = Cliente.objects.filter(is_deleted=False).get(cpf=self.kwargs["cpf"])
         return initial
 
     def form_valid(self, form):
-        form.instance.requerente_titular = Cliente.objects.get(cpf=self.kwargs["cpf"])
+        form.instance.requerente_titular = Cliente.objects.filter(is_deleted=False).get(cpf=self.kwargs["cpf"])
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -190,7 +188,7 @@ class RequerimentoDetailView(DetailView):
         
         cliente_id = self.object.requerente_titular.cpf
         cliente = (
-            Cliente.objects.filter(cpf__icontains=cliente_id)[0]
+            Cliente.objects.filter(is_deleted=False).filter(cpf__icontains=cliente_id)[0]
         )  # .order_by('nome') '-nome' para ordem decrescente
         exigencias_requerimento = self.object.NB_exigencia.filter(NB__NB=self.object.NB)
         recursos_requerimento = self.object.NB_recurso.filter(NB__NB=self.object.NB)        
@@ -247,11 +245,9 @@ class RequerimentoDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super(RequerimentoDeleteView, self).get_context_data(**kwargs)
 
-        exigencias = Exigencia.objects.all()
         numero_NB = self.object.NB
-        exigencias_requerimento = exigencias.filter(NB__NB=numero_NB)
-        recursos = Recurso.objects.all()
-        recursos_requerimento = recursos.filter(NB__NB=numero_NB)
+        exigencias_requerimento = Exigencia.objects.filter(is_deleted=False).filter(NB__NB=numero_NB)
+        recursos_requerimento = Recurso.objects.filter(is_deleted=False).filter(NB__NB=numero_NB)
         qtde_instancias_filhas = exigencias_requerimento.count() + recursos_requerimento.count()
         result_list = list(chain(exigencias_requerimento, recursos_requerimento))
 
@@ -390,12 +386,14 @@ class PrazoView(TemplateView):
     def get_context_data(self, **kwargs) -> dict[str, any]:
         context = super(PrazoView, self).get_context_data(**kwargs)
         ultimos_30_dias = datetime.now() - timedelta(days=30)
-        exigencias_nao_crumpridas = Exigencia.objects.all().select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
+        
+        exigencias_nao_crumpridas = Exigencia.objects.all().filter(is_deleted=False).select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
         exigencias_futuras = exigencias_nao_crumpridas.filter(data_final_prazo__gt=datetime.now())
         exigencias_vencidas = exigencias_nao_crumpridas.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
         existem_exigencias_futuras = exigencias_futuras.exists()
         existem_exigencias_vencidas = exigencias_vencidas.exists()
-        recursos_nao_cumpridos = Recurso.objects.all().select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
+        
+        recursos_nao_cumpridos = Recurso.objects.all().filter(is_deleted=False).select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
         recursos_futuros = recursos_nao_cumpridos.filter(data_final_prazo__gt=datetime.now())
         recursos_vencidos = recursos_nao_cumpridos.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
         existem_recursos_futuros = recursos_futuros.exists()
