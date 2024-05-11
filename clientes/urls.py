@@ -21,7 +21,6 @@ from django.contrib import admin
 from django.urls import path
 from clientes.views import (
     IndexView,
-    LoginView,
     ClientesListView,
     ClienteCreateView,
     ClienteUpdateView,

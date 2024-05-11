@@ -4,14 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 
 
-# Home Page
-@login_required(login_url="login")
-def home(request):
-    return render(request, "login/home.html")
-
-
 # Login Page
 def user_login(request):
+    page_title = "Login..."
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -24,7 +19,7 @@ def user_login(request):
 
     else:
         form = LoginForm()
-    return render(request, "registration/login.html", {"form": form})
+    return render(request, "registration/login.html", {"form": form, "page_title": page_title})
 
 
 # Logout Page
