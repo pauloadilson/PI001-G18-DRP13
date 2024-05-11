@@ -30,4 +30,4 @@ def user_login(request):
 # Logout Page
 def user_logout(request):
     logout(request)
-    return redirect("login")
+    return redirect("index")
