@@ -19,7 +19,7 @@ from django.urls import reverse_lazy
 from datetime import datetime, timedelta
 from django.shortcuts import redirect
 from itertools import chain
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -44,7 +44,12 @@ class LoginView(TemplateView):
         return context
 
 
-class ClientesListView(ListView):
+class ClientesListView(LoginRequiredMixin, ListView):
+
+    # Redireciona o usuário não logado
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+
     model = Cliente
     template_name = "clientes.html"
     context_object_name = "clientes"
@@ -65,7 +70,8 @@ class ClientesListView(ListView):
         return context
 
 
-class ClienteCreateView(CreateView):
+class ClienteCreateView(LoginRequiredMixin, CreateView):
+
     model = Cliente
     template_name = "form.html"
     form_class = ClienteModelForm
@@ -80,7 +86,7 @@ class ClienteCreateView(CreateView):
         return context
 
 
-class ClienteUpdateView(UpdateView):
+class ClienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Cliente
     template_name = "form.html"
     form_class = ClienteModelForm
@@ -99,7 +105,7 @@ class ClienteUpdateView(UpdateView):
         return context
 
 
-class ClienteDetailView(DetailView):
+class ClienteDetailView(LoginRequiredMixin, DetailView):
     model = Cliente
     template_name = "cliente.html"
     context_object_name = "cliente"
@@ -121,7 +127,7 @@ class ClienteDetailView(DetailView):
         return context
 
 
-class ClienteDeleteView(DeleteView):
+class ClienteDeleteView(LoginRequiredMixin, DeleteView):
     model = Cliente
     template_name = "delete.html"
     success_url = "/clientes/"
@@ -147,7 +153,7 @@ class ClienteDeleteView(DeleteView):
         return context
 
 
-class RequerimentoCreateView(CreateView):
+class RequerimentoCreateView(LoginRequiredMixin, CreateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
@@ -175,7 +181,7 @@ class RequerimentoCreateView(CreateView):
         return context
 
 
-class RequerimentoDetailView(DetailView):
+class RequerimentoDetailView(LoginRequiredMixin, DetailView):
     model = Requerimento
     slug_field = "NB"
     slug_url_kwarg = "NB"
@@ -207,7 +213,7 @@ class RequerimentoDetailView(DetailView):
         return context
 
 
-class RequerimentoUpdateView(UpdateView):
+class RequerimentoUpdateView(LoginRequiredMixin, UpdateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
@@ -237,7 +243,7 @@ class RequerimentoUpdateView(UpdateView):
         return context
 
 
-class RequerimentoDeleteView(DeleteView):
+class RequerimentoDeleteView(LoginRequiredMixin, DeleteView):
     model = Requerimento
     template_name = "delete.html"
     success_url = "clientes"
@@ -271,7 +277,7 @@ class RequerimentoDeleteView(DeleteView):
         return context
 
 
-class IncidenteCreateView(CreateView):
+class IncidenteCreateView(LoginRequiredMixin, CreateView):
     model = None
     template_name = "form.html"
     form_class = None
@@ -395,7 +401,12 @@ class RecursoDeleteView(IncidenteDeleteView):
     slug_url_kwarg = "protocolo"
 
 
-class PrazoView(TemplateView):
+class PrazoView(LoginRequiredMixin, TemplateView):
+
+    # Redireciona o usuário não logado
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+
     template_name = "prazo.html"
     page_title = "Prazo"
 
