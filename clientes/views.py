@@ -19,8 +19,7 @@ from django.urls import reverse_lazy
 from datetime import datetime, timedelta
 from django.shortcuts import redirect
 from itertools import chain
-
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -45,7 +44,12 @@ class LoginView(TemplateView):
         return context
 
 
-class ClientesListView(ListView):
+class ClientesListView(LoginRequiredMixin, ListView):
+
+    # Redireciona o usuário não logado
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+
     model = Cliente
     template_name = "clientes.html"
     context_object_name = "clientes"
@@ -66,7 +70,8 @@ class ClientesListView(ListView):
         return context
 
 
-class ClienteCreateView(CreateView):
+class ClienteCreateView(LoginRequiredMixin, CreateView):
+
     model = Cliente
     template_name = "form.html"
     form_class = ClienteModelForm
@@ -81,7 +86,7 @@ class ClienteCreateView(CreateView):
         return context
 
 
-class ClienteUpdateView(UpdateView):
+class ClienteUpdateView(LoginRequiredMixin, UpdateView):
     model = Cliente
     template_name = "form.html"
     form_class = ClienteModelForm
@@ -100,7 +105,7 @@ class ClienteUpdateView(UpdateView):
         return context
 
 
-class ClienteDetailView(DetailView):
+class ClienteDetailView(LoginRequiredMixin, DetailView):
     model = Cliente
     template_name = "cliente.html"
     context_object_name = "cliente"
@@ -117,11 +122,11 @@ class ClienteDetailView(DetailView):
         context["page_title"] = page_title
         context["requerimentos_cliente"] = requerimentos_cliente
         context["qtde_instancias_filhas"] = qtde_instancias_filhas
-        
+
         return context
 
 
-class ClienteDeleteView(DeleteView):
+class ClienteDeleteView(LoginRequiredMixin, DeleteView):
     model = Cliente
     template_name = "delete.html"
     success_url = "/clientes/"
@@ -132,7 +137,9 @@ class ClienteDeleteView(DeleteView):
     def get_context_data(self, **kwargs):
         context = super(ClienteDeleteView, self).get_context_data(**kwargs)
         cliente_id = self.object.cpf
-        requerimentos_cliente = Requerimento.objects.filter(is_deleted=False).filter(requerente_titular__cpf__icontains=cliente_id)
+        requerimentos_cliente = Requerimento.objects.filter(is_deleted=False).filter(
+            requerente_titular__cpf__icontains=cliente_id
+        )
         qtde_instancias_filhas = requerimentos_cliente.count()
 
         context["page_title"] = self.page_title
@@ -140,11 +147,11 @@ class ClienteDeleteView(DeleteView):
         context["form_title_identificador"] = f"de CPF nº {self.object.cpf}"
         context["tipo_objeto"] = self.tipo_objeto
         context["qtde_instancias_filhas"] = qtde_instancias_filhas
-        context['result_list'] = requerimentos_cliente
+        context["result_list"] = requerimentos_cliente
         return context
 
 
-class RequerimentoCreateView(CreateView):
+class RequerimentoCreateView(LoginRequiredMixin, CreateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
@@ -172,7 +179,7 @@ class RequerimentoCreateView(CreateView):
         return context
 
 
-class RequerimentoDetailView(DetailView):
+class RequerimentoDetailView(LoginRequiredMixin, DetailView):
     model = Requerimento
     slug_field = "NB"
     slug_url_kwarg = "NB"
@@ -185,14 +192,16 @@ class RequerimentoDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(RequerimentoDetailView, self).get_context_data(**kwargs)
-        
+
         cliente_id = self.object.requerente_titular.cpf
-        cliente = (
-            Cliente.objects.filter(is_deleted=False).filter(cpf__icontains=cliente_id)[0]
-        )  # .order_by('nome') '-nome' para ordem decrescente
+        cliente = Cliente.objects.filter(is_deleted=False).filter(cpf__icontains=cliente_id)[
+            0
+        ]  # .order_by('nome') '-nome' para ordem decrescente
         exigencias_requerimento = self.object.NB_exigencia.filter(NB__NB=self.object.NB)
-        recursos_requerimento = self.object.NB_recurso.filter(NB__NB=self.object.NB)        
-        qtde_instancias_filhas = exigencias_requerimento.count() + recursos_requerimento.count()
+        recursos_requerimento = self.object.NB_recurso.filter(NB__NB=self.object.NB)
+        qtde_instancias_filhas = (
+            exigencias_requerimento.count() + recursos_requerimento.count()
+        )
 
         context["page_title"] = self.page_title
         context["cliente"] = cliente
@@ -202,15 +211,15 @@ class RequerimentoDetailView(DetailView):
         return context
 
 
-class RequerimentoUpdateView(UpdateView):
+class RequerimentoUpdateView(LoginRequiredMixin, UpdateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
     page_title = "Editando Requerimento"
     form_title = "Editando Requerimento"
     form_title_identificador = None
-    slug_field = 'NB'
-    slug_url_kwarg = 'NB'
+    slug_field = "NB"
+    slug_url_kwarg = "NB"
 
     def form_valid(self, form):
         return super().form_valid(form)
@@ -232,7 +241,7 @@ class RequerimentoUpdateView(UpdateView):
         return context
 
 
-class RequerimentoDeleteView(DeleteView):
+class RequerimentoDeleteView(LoginRequiredMixin, DeleteView):
     model = Requerimento
     template_name = "delete.html"
     success_url = "clientes"
@@ -248,7 +257,9 @@ class RequerimentoDeleteView(DeleteView):
         numero_NB = self.object.NB
         exigencias_requerimento = Exigencia.objects.filter(is_deleted=False).filter(NB__NB=numero_NB)
         recursos_requerimento = Recurso.objects.filter(is_deleted=False).filter(NB__NB=numero_NB)
-        qtde_instancias_filhas = exigencias_requerimento.count() + recursos_requerimento.count()
+        qtde_instancias_filhas = (
+            exigencias_requerimento.count() + recursos_requerimento.count()
+        )
         result_list = list(chain(exigencias_requerimento, recursos_requerimento))
 
         context["page_title"] = self.page_title
@@ -256,13 +267,13 @@ class RequerimentoDeleteView(DeleteView):
         context["form_title_identificador"] = f"de NB nº {self.object.NB}"
         context["tipo_objeto"] = self.tipo_objeto
         context["qtde_instancias_filhas"] = qtde_instancias_filhas
-        context['exigencias_requerimento'] = exigencias_requerimento
-        context['recursos_requerimento'] = recursos_requerimento
-        context['result_list'] = result_list
+        context["exigencias_requerimento"] = exigencias_requerimento
+        context["recursos_requerimento"] = recursos_requerimento
+        context["result_list"] = result_list
         return context
 
 
-class IncidenteCreateView(CreateView):
+class IncidenteCreateView(LoginRequiredMixin, CreateView):
     model = None
     template_name = "form.html"
     form_class = None
@@ -280,8 +291,8 @@ class IncidenteCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('requerimento', kwargs={'NB': self.kwargs['NB']})
-    
+        return reverse_lazy("requerimento", kwargs={"NB": self.kwargs["NB"]})
+
     def get_context_data(self, **kwargs):
         context = super(IncidenteCreateView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
@@ -306,10 +317,9 @@ class IncidenteUpdateView(UpdateView):
     form_title = "Editando"
     form_title_identificador = None
 
-
     def get_success_url(self):
-        return reverse_lazy('requerimento', kwargs={'NB': self.kwargs['NB']})
-    
+        return reverse_lazy("requerimento", kwargs={"NB": self.kwargs["NB"]})
+
     def get_context_data(self, **kwargs):
         context = super(IncidenteUpdateView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
@@ -330,6 +340,7 @@ class ExigenciaUpdateView(IncidenteUpdateView):
     slug_field = "protocolo"
     slug_url_kwarg = "protocolo"
 
+
 class RecursoCreateView(IncidenteCreateView):
     model = Recurso
     form_class = RecursoModelForm
@@ -345,13 +356,14 @@ class RecursoUpdateView(IncidenteUpdateView):
     slug_field = "protocolo"
     slug_url_kwarg = "protocolo"
 
+
 class IncidenteDeleteView(DeleteView):
     model = None
     template_name = "delete.html"
     page_title = "Excluindo"
     form_title = "Excluindo"
     tipo_objeto = None
-    
+
     def get_context_data(self, **kwargs):
         context = super(IncidenteDeleteView, self).get_context_data(**kwargs)
         context["page_title"] = self.page_title
@@ -360,10 +372,10 @@ class IncidenteDeleteView(DeleteView):
         context["tipo_objeto"] = self.tipo_objeto
         context["qtde_instancias_filhas"] = 0
         return context
-    
+
     def get_success_url(self):
         return reverse_lazy("requerimento", kwargs={"NB": self.object.NB.NB})
-    
+
 
 class ExigenciaDeleteView(IncidenteDeleteView):
     model = Exigencia
@@ -379,7 +391,12 @@ class RecursoDeleteView(IncidenteDeleteView):
     tipo_objeto = "o recurso"
 
 
-class PrazoView(TemplateView):
+class PrazoView(LoginRequiredMixin, TemplateView):
+
+    # Redireciona o usuário não logado
+    login_url = "/login/"
+    redirect_field_name = "redirect_to"
+ 
     template_name = "prazo.html"
     page_title = "Prazo"
 
@@ -387,15 +404,29 @@ class PrazoView(TemplateView):
         context = super(PrazoView, self).get_context_data(**kwargs)
         ultimos_30_dias = datetime.now() - timedelta(days=30)
         
-        exigencias_nao_crumpridas = Exigencia.objects.all().filter(is_deleted=False).select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
+        exigencias_nao_crumpridas = (
+            Exigencia.objects.all()
+            .filter(is_deleted=False).select_related("NB")
+            .select_related("NB__requerente_titular")
+            .exclude(estado__nome="Cumprido")
+        )
         exigencias_futuras = exigencias_nao_crumpridas.filter(data_final_prazo__gt=datetime.now())
-        exigencias_vencidas = exigencias_nao_crumpridas.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
+        exigencias_vencidas = exigencias_nao_crumpridas.filter(
+            data_final_prazo__range=(ultimos_30_dias, datetime.now())
+        )
         existem_exigencias_futuras = exigencias_futuras.exists()
         existem_exigencias_vencidas = exigencias_vencidas.exists()
         
-        recursos_nao_cumpridos = Recurso.objects.all().filter(is_deleted=False).select_related('NB').select_related('NB__requerente_titular').exclude(estado__nome='Cumprido')
+        recursos_nao_cumpridos = (
+            Recurso.objects.all()
+            .filter(is_deleted=False).select_related("NB")
+            .select_related("NB__requerente_titular")
+            .exclude(estado__nome="Cumprido")
+        )
         recursos_futuros = recursos_nao_cumpridos.filter(data_final_prazo__gt=datetime.now())
-        recursos_vencidos = recursos_nao_cumpridos.filter(data_final_prazo__range=(ultimos_30_dias, datetime.now()))
+        recursos_vencidos = recursos_nao_cumpridos.filter(
+            data_final_prazo__range=(ultimos_30_dias, datetime.now())
+        )
         existem_recursos_futuros = recursos_futuros.exists()
         existem_recursos_vencidos = recursos_vencidos.exists()
 
