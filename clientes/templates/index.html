@@ -6,10 +6,10 @@
     <div class="container-fluid ">
         <div class="p-2 mt-3">
             <div class='display-5'>Bem Vindo(a)
-                {% if user.is_authenticated %} 
-                , 
-                {{ user.get_username }}
-                {% endif %}!
+                {% if user.is_authenticated %}, {{ user.get_full_name }}!
+                {% else %}
+                {{ user.get_username }}!
+                {% endif %}
             </div>
             <hr />
             <div class="card card-body text-center">

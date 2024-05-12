@@ -19,9 +19,6 @@ from django.urls import reverse_lazy
 from datetime import datetime, timedelta
 from django.shortcuts import redirect
 from itertools import chain
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-# Create your views here.
 
 
 class IndexView(TemplateView):
@@ -35,7 +32,7 @@ class IndexView(TemplateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ClientesListView(LoginRequiredMixin, ListView):
+class ClientesListView(ListView):
     model = Cliente
     template_name = "clientes.html"
     context_object_name = "clientes"
@@ -56,7 +53,7 @@ class ClientesListView(LoginRequiredMixin, ListView):
         return context
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ClienteCreateView(LoginRequiredMixin, CreateView):
+class ClienteCreateView(CreateView):
 
     model = Cliente
     template_name = "form.html"
@@ -73,7 +70,7 @@ class ClienteCreateView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ClienteUpdateView(LoginRequiredMixin, UpdateView):
+class ClienteUpdateView(UpdateView):
     model = Cliente
     template_name = "form.html"
     form_class = ClienteModelForm
@@ -93,7 +90,7 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ClienteDetailView(LoginRequiredMixin, DetailView):
+class ClienteDetailView(DetailView):
     model = Cliente
     template_name = "cliente.html"
     context_object_name = "cliente"
@@ -115,7 +112,7 @@ class ClienteDetailView(LoginRequiredMixin, DetailView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class ClienteDeleteView(LoginRequiredMixin, DeleteView):
+class ClienteDeleteView(DeleteView):
     model = Cliente
     template_name = "delete.html"
     success_url = "/clientes/"
@@ -141,7 +138,7 @@ class ClienteDeleteView(LoginRequiredMixin, DeleteView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class RequerimentoCreateView(LoginRequiredMixin, CreateView):
+class RequerimentoCreateView(CreateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
@@ -170,7 +167,7 @@ class RequerimentoCreateView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class RequerimentoDetailView(LoginRequiredMixin, DetailView):
+class RequerimentoDetailView(DetailView):
     model = Requerimento
     slug_field = "NB"
     slug_url_kwarg = "NB"
@@ -203,7 +200,7 @@ class RequerimentoDetailView(LoginRequiredMixin, DetailView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class RequerimentoUpdateView(LoginRequiredMixin, UpdateView):
+class RequerimentoUpdateView(UpdateView):
     model = Requerimento
     template_name = "form.html"
     form_class = RequerimentoModelForm
@@ -234,7 +231,7 @@ class RequerimentoUpdateView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class RequerimentoDeleteView(LoginRequiredMixin, DeleteView):
+class RequerimentoDeleteView(DeleteView):
     model = Requerimento
     template_name = "delete.html"
     success_url = "clientes"
@@ -267,7 +264,7 @@ class RequerimentoDeleteView(LoginRequiredMixin, DeleteView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class IncidenteCreateView(LoginRequiredMixin, CreateView):
+class IncidenteCreateView(CreateView):
     model = None
     template_name = "form.html"
     form_class = None
@@ -394,7 +391,7 @@ class RecursoDeleteView(IncidenteDeleteView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class PrazoView(LoginRequiredMixin, TemplateView):
+class PrazoView(TemplateView):
 
     # Redireciona o usuário não logado
     login_url = "/login/"

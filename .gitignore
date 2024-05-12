@@ -129,6 +129,7 @@ ENV/
 env.bak/
 venv.bak/
 .venv_pi_001/
+venv_pi_001/
 venv_pi001_test/
 
 # Spyder project settings
