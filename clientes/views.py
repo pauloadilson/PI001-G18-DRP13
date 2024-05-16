@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models.base import Model as Model
+from django.http import Http404
 from django.utils.decorators import method_decorator
 from clientes.models import Cliente, Requerimento, Exigencia, Recurso
 from clientes.form import (
@@ -41,7 +43,7 @@ class ClientesListView(ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        clientes = super().get_queryset()
+        clientes = super().get_queryset().filter(is_deleted=False)
         busca = self.request.GET.get("busca")
         if busca:
             clientes = clientes.filter(cpf__icontains=busca)
@@ -87,6 +89,12 @@ class ClienteUpdateView(UpdateView):
         context["form_title"] = f"{self.form_title}"
         context["form_title_identificador"] = f"CPF nº {self.object.cpf}"
         return context
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -95,6 +103,12 @@ class ClienteDetailView(DetailView):
     template_name = "cliente.html"
     context_object_name = "cliente"
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+    
     def get_context_data(self, **kwargs):
         context = super(ClienteDetailView, self).get_context_data(**kwargs)
         cliente_id = self.object.cpf
@@ -136,6 +150,12 @@ class ClienteDeleteView(DeleteView):
         context["result_list"] = requerimentos_cliente
         return context
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+    
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class RequerimentoCreateView(CreateView):
@@ -178,6 +198,12 @@ class RequerimentoDetailView(DetailView):
 
     cliente_id = None
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+
     def get_context_data(self, **kwargs):
         context = super(RequerimentoDetailView, self).get_context_data(**kwargs)
 
@@ -210,6 +236,12 @@ class RequerimentoUpdateView(UpdateView):
     slug_field = "NB"
     slug_url_kwarg = "NB"
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+    
     def form_valid(self, form):
         return super().form_valid(form)
 
@@ -240,6 +272,12 @@ class RequerimentoDeleteView(DeleteView):
     tipo_objeto = "o requerimento"
     slug_field = "NB"
     slug_url_kwarg = "NB"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
 
     def get_context_data(self, **kwargs):
         context = super(RequerimentoDeleteView, self).get_context_data(**kwargs)
@@ -324,7 +362,13 @@ class IncidenteUpdateView(UpdateView):
             f"NB nº {self.object.NB.NB} de {self.object.NB.requerente_titular.nome}"
         )
         return context
-
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+    
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ExigenciaUpdateView(IncidenteUpdateView):
@@ -375,7 +419,13 @@ class IncidenteDeleteView(DeleteView):
 
     def get_success_url(self):
         return reverse_lazy("requerimento", kwargs={"NB": self.object.NB.NB})
-
+    
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        if obj.is_deleted:
+            raise Http404("Requerimento não encontrado")
+        return obj
+    
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ExigenciaDeleteView(IncidenteDeleteView):
