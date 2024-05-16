@@ -72,12 +72,12 @@ urlpatterns = [
         name="nova_exigencia",
     ),
     path(
-        "exigencia/<int:NB>/<int:protocolo>/update",
+        "exigencia/<int:NB>/<int:pk>/update",
         ExigenciaUpdateView.as_view(),
         name="update_exigencia",
     ),
     path(
-        "exigencia/<int:NB>/<int:protocolo>/delete",
+        "exigencia/<int:NB>/<int:pk>/delete",
         ExigenciaDeleteView.as_view(),
         name="delete_exigencia",
     ),

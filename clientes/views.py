@@ -185,8 +185,8 @@ class RequerimentoDetailView(DetailView):
         cliente = Cliente.objects.filter(is_deleted=False).filter(cpf__icontains=cliente_id)[
             0
         ]  # .order_by('nome') '-nome' para ordem decrescente
-        exigencias_requerimento = self.object.NB_exigencia.filter(NB__NB=self.object.NB)
-        recursos_requerimento = self.object.NB_recurso.filter(NB__NB=self.object.NB)
+        exigencias_requerimento = self.object.NB_exigencia.filter(is_deleted=False).filter(NB__NB=self.object.NB)
+        recursos_requerimento = self.object.NB_recurso.filter(is_deleted=False).filter(NB__NB=self.object.NB)
         qtde_instancias_filhas = (
             exigencias_requerimento.count() + recursos_requerimento.count()
         )
@@ -261,6 +261,9 @@ class RequerimentoDeleteView(DeleteView):
         context["recursos_requerimento"] = recursos_requerimento
         context["result_list"] = result_list
         return context
+    
+    def get_success_url(self):
+        return reverse_lazy("cliente", kwargs={"pk": self.object.requerente_titular.cpf})
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
