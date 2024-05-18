@@ -374,12 +374,8 @@ class IncidenteUpdateView(UpdateView):
 class ExigenciaUpdateView(IncidenteUpdateView):
     model = Exigencia
     form_class = ExigenciaModelForm
-    slug_url_kwarg = "slugfied_protocolo"
     page_title = "Editando Exigência"
     form_title = "Editando Exigência"
-
-    slug_field = "protocolo"
-    slug_url_kwarg = "protocolo"
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -396,8 +392,6 @@ class RecursoUpdateView(IncidenteUpdateView):
     form_class = RecursoModelForm
     page_title = "Editando Recurso"
     form_title = "Editando Recurso"
-    slug_field = "protocolo"
-    slug_url_kwarg = "protocolo"
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')

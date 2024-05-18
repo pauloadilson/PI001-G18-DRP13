@@ -4,7 +4,6 @@ from .validators import validate_file_extension
 
 import os
 from datetime import datetime
-from django.utils.text import slugify
 
 def path_and_rename(instance, filename):
     if isinstance(instance, Cliente):
@@ -15,18 +14,16 @@ def path_and_rename(instance, filename):
         pk = instance.NB
     elif isinstance(instance, Exigencia):
         upload_to = 'arquivo_exigencias/'
-        pk = f'{instance.NB.NB}_{instance.protocolo}'
+        pk = f'{instance.NB.NB}'
     elif isinstance(instance, Recurso):
         upload_to = 'arquivo_recursos/'
-        pk = f'{instance.NB.NB}_{instance.protocolo}'
+        pk = f'{instance.NB.NB}'
     else:
         upload_to = 'arquivos/'
-    # get filename
     if pk:
-        filename = f'{pk}_{datetime.now().strftime('%Y%m%d%H%M%S')}.{filename}'
+        filename = f'{pk}_{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}'
     else:
-        # set filename as random string
-        filename = f'{datetime.now().strftime('%Y%m%d%H%M%S')}.{filename}'
+        filename = f'{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}'
     # return the whole path to the file
     return os.path.join(upload_to, filename)
 

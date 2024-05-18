@@ -83,12 +83,12 @@ urlpatterns = [
     ),
     path("recurso/<int:NB>/incluir", RecursoCreateView.as_view(), name="novo_recurso"),
     path(
-        "recurso/<int:NB>/<int:protocolo>/update",
+        "recurso/<int:NB>/<int:pk>/update",
         RecursoUpdateView.as_view(),
         name="update_recurso",
     ),
     path(
-        "recurso/<int:NB>/<int:protocolo>/delete",
+        "recurso/<int:NB>/<int:pk>/delete",
         RecursoDeleteView.as_view(),
         name="delete_recurso",
     ),
