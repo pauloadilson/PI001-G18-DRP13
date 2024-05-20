@@ -487,3 +487,17 @@ class PrazoView(TemplateView):
         context["existem_recursos_futuros"] = existem_recursos_futuros
         context["existem_recursos_vencidos"] = existem_recursos_vencidos
         return context
+
+class Custom404View(TemplateView):
+    template_name = "404.html"
+    page_title = "Página não encontrada"
+
+    def get_context_data(self, **kwargs):
+        context = super(Custom404View, self).get_context_data(**kwargs)
+        context["page_title"] = self.page_title
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        response.status_code = 404
+        return response

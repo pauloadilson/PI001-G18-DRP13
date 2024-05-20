@@ -18,7 +18,7 @@
             <hr />
                 <dl class="row">
                     <dt class="col-sm-3">CPF</dt>
-                    <dd class="col-sm-9">{{ cliente.cpf }}</dd>
+                    <dd class="col-sm-9"><a href="{% url 'cliente' cliente.cpf %}"> {{ cliente.cpf }} </a> </dd>
                 
                     <dt class="col-sm-3">Nome</dt>
                     <dd class="col-sm-9">{{ cliente.nome }}</dd>
@@ -138,6 +138,9 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>        
+        <div class="p-1 mt-3">
+            <a class="btn btn-secondary" onclick="window.history.back()">Voltar</a>
         </div>
     </div>
 </div>

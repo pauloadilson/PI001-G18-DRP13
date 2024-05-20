@@ -52,7 +52,6 @@ class RequerimentoModelForm(forms.ModelForm):
             Field('requerente_titular', css_class='form-control', type='hidden'),
             Field('servico', css_class='form-control'),
             Field('NB', css_class='form-control'),
-            Field('slugfied_NB', css_class='form-control'),
             Field('requerente_dependentes', css_class='form-control'),
             Field('tutor_curador', css_class='form-control'),
             Field('instituidor', css_class='form-control'),
