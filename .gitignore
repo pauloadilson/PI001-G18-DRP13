@@ -131,6 +131,7 @@ venv.bak/
 .venv_pi_001/
 venv_pi_001/
 venv_pi001_test/
+static
 
 # Spyder project settings
 .spyderproject
