@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_bootstrap_icons",
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -154,8 +155,35 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Data no formato brasileiro dd-mm-aaaa
 DATE_INPUT_FORMATS = ["%d/%m/%Y"]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / 'collected-media'
+
+S3_ENABLED = os.environ.get('S3_ENABLED', default=False)
+LOCAL_SERVE_MEDIA_FILES = os.environ.get('LOCAL_SERVE_MEDIA_FILES', default=not S3_ENABLED)
+
+if not LOCAL_SERVE_MEDIA_FILES and not S3_ENABLED:
+    raise ValueError('S3_ENABLED must be true if either media files are not served locally')
+
+if S3_ENABLED:
+    AWS_ACCESS_KEY_ID = os.getenv('BUCKETEER_AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('BUCKETEER_AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('BUCKETEER_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.getenv('BUCKETEER_AWS_REGION')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_SIGNATURE_VERSION = os.getenv('S3_SIGNATURE_VERSION', default='s3v4')
+    AWS_S3_ENDPOINT_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+
+if not LOCAL_SERVE_MEDIA_FILES:
+    PUBLIC_MEDIA_DEFAULT_ACL = 'public-read'
+    PUBLIC_MEDIA_LOCATION = 'media/public'
+
+    MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'app.utils.storage_backends.PublicMediaStorage'
+
+    PRIVATE_MEDIA_DEFAULT_ACL = 'private'
+    PRIVATE_MEDIA_LOCATION = 'media/private'
+    PRIVATE_FILE_STORAGE = 'app.utils.storage_backends.PrivateMediaStorage'
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

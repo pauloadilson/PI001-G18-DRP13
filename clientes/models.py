@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from .validators import validate_file_extension
+from app.utils.storage_backend import PrivateMediaStorage
 
 import os
 from datetime import datetime
@@ -33,7 +34,7 @@ class Cliente(models.Model):
     data_nascimento = models.DateField() # Data de nascimento do cliente Ex: 21-01-1990
     telefone_whatsapp = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
     telefone = models.CharField(max_length=11, blank=True, null=True) # Telefone do cliente Ex: 81999998888
-    arquivo_do_cliente = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do cliente
+    arquivo_do_cliente = models.FileField(blank=True, null=True, validators=[validate_file_extension], storage=PrivateMediaStorage()) # Arquivos do cliente
     
     is_deleted = models.BooleanField(default=False)
 
@@ -72,7 +73,7 @@ class Requerimento(models.Model):
     data = models.DateField() # Data do requerimento
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_requerimento') # Estado do requerimento Ex: Pendente, ConcluÃ­do
     observacao = models.TextField() # ObservaÃ§Ãµes do requerimento
-    arquivo_do_requerimento = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do requerimento
+    arquivo_do_requerimento = models.FileField(storage=PrivateMediaStorage(), blank=True, null=True, validators=[validate_file_extension]) # Arquivos do requerimento
 
     is_deleted = models.BooleanField(default=False)
 
@@ -100,7 +101,7 @@ class Exigencia(models.Model):
     data_final_prazo = models.DateField() # Data da exigÃªncia
     natureza = models.ForeignKey(Natureza, on_delete=models.PROTECT, related_name='natureza_exigencia') # Natureza da exigÃªncia Ex: DocumentaÃ§Ã£o, InformaÃ§Ã£o
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_exigencia') # Estado do recurso Ex: Pendente, ConcluÃ­do
-    arquivo_da_exigencia = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigÃªncia
+    arquivo_da_exigencia = models.FileField(storage=PrivateMediaStorage(), blank=True, null=True, validators=[validate_file_extension]) # Arquivos da exigÃªncia
     
     is_deleted = models.BooleanField(default=False)
 
@@ -121,7 +122,7 @@ class Recurso(models.Model):
     data_final_prazo = models.DateField() # Data do recurso
     estado = models.ForeignKey(Estado, on_delete=models.PROTECT, related_name='estado_recurso') # Estado do recurso Ex: Pendente, ConcluÃ­do
     observacao = models.TextField() # ObservaÃ§Ãµes do recurso
-    arquivo_do_recurso = models.FileField(upload_to=path_and_rename, blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
+    arquivo_do_recurso = models.FileField(storage=PrivateMediaStorage(), blank=True, null=True, validators=[validate_file_extension]) # Arquivos do recurso
 
     is_deleted = models.BooleanField(default=False)
 
