@@ -3,8 +3,15 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 
+def redirect_if_logged_in(func):
+    def inner_func(request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('index')
+        return func(request, *args, **kwargs)
+    return inner_func
 
 # Login Page
+@redirect_if_logged_in
 def user_login(request):
     page_title = "Login..."
     if request.method == "POST":
